@@ -4,89 +4,66 @@ from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
-vertices = [(-1, -1, -1), (1, -1, -1), (-1, 1, -1), (-1, -1, 1), (1, 1, 1), (1, 1, -1), (1, -1, 1), (-1, 1, 1)]
-edges = [(0,1), (0,2), (0,3), (4,5), (4,6), (4,7), (1,5), (2,5), (3,7), (1,6), (2,7), (3,6)]
-surfaces = [(0,1,6,3), (1,6,4,5), (2,5,4,7), (4,6,3,7), (0,3,7,2), (0,1,5,2)]
-colors = [(1, 0, 0), (0, 1, 0), (1, 1, 0), (0, 0, 1), (1, 0, 1), (0, 1, 1)]
-size = (800, 600)
+from src.engine.Game import Game
+from src.rendering.object.StaticCube import StaticCube
 
 
-def render():
+class Main:
 
-    glBegin(GL_QUADS)
+    def __init__(self):
+        SIZE = 800, 600
+        pg.display.set_mode(SIZE, DOUBLEBUF|OPENGL)
+        glEnable(GL_DEPTH_TEST)
+        glDepthFunc(GL_LESS)
+        self.running = True
+        self.initGame(*SIZE)
+        self.gameLoop()
     
-    for surface, color in zip(surfaces, colors):
-        glColor3f(*color)
-        for ver in surface:
-            glVertex3fv(vertices[ver])
+    def initGame(self, width, height):
+        self.__game = Game(width, height)
+
+    def gameLoop(self):
+        clock = pg.time.Clock()
+        while self.running:
+            self.handleEvents()
+            glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
+            glLoadIdentity()
+            self.render()
+            pg.display.flip()
+            clock.tick(30)
+        else:
+            pg.quit()
     
-    glEnd()
-
-def main():
-
-    pg.display.set_mode(size, DOUBLEBUF|OPENGL)
-    gluPerspective(60, size[0]/size[1], 0.1, 100.0)
-    glEnable(GL_DEPTH_TEST)
-    glDepthFunc(GL_LESS)
-
-    glTranslatef(0, 0, -7)
-    left, right, up, down, z, x = [False] * 6
-    while True:
+    def handleEvents(self):
         for event in pg.event.get():
             if event.type == pg.QUIT:
-                pg.quit()
-                quit(0)
-
-            if event.type == pg.KEYDOWN:
+                self.running = False
+            elif event.type == pg.KEYDOWN:
                 if event.key == pg.K_LEFT:
-                    left = True
+                    self.__game.moveX("Player", -2)
                 elif event.key == pg.K_RIGHT:
-                    right = True
+                    self.__game.moveX("Player", 2)
                 elif event.key == pg.K_UP:
-                    up = True
+                    self.__game.moveZ("Player", -2)
                 elif event.key == pg.K_DOWN:
-                    down = True
-                elif event.key == pg.K_z:
-                    z = True
-                elif event.key == pg.K_x:
-                    x = True
-
+                    self.__game.moveZ("Player", 2)
+            
             elif event.type == pg.KEYUP:
                 if event.key == pg.K_LEFT:
-                    left = False
+                    pass
                 elif event.key == pg.K_RIGHT:
-                    right = False
+                    pass
                 elif event.key == pg.K_UP:
-                    up = False
+                    pass
                 elif event.key == pg.K_DOWN:
-                    down = False
-                elif event.key == pg.K_z:
-                    z = False
-                elif event.key == pg.K_x:
-                    x = False
-        
-        if left:
-            glRotatef(-1, 0, 1, 0)
-        if right:
-            glRotatef(1, 0, 1, 0)
-        if up:
-            glRotatef(-1, 1, 0, 0)
-        if down:
-            glRotatef(1, 1, 0, 0)
-        if z:
-            glTranslatef(0, 0, 0.1)
-        if x:
-            glTranslatef(0, 0, -0.1)
-
-        glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
-        render()
-        pg.display.flip()
-        pg.time.wait(1)
-
+                    pass
+    
+    def render(self):
+        self.__game.render()
 
 pg.init()
 try:
-    main()
+    Main()
 except Exception as e:
-    print(e)
     pg.quit()
+    raise e
