@@ -17,6 +17,7 @@ class StaticSceneObject:
         self.__genVertexBuffer(vertices)
         self.__genIndicesBuffer(indices)
         self.__genColorBuffer(colors)
+        self.__childObjects = set()
     
     def __genVertexBuffer(self, vertices):
         self.vertexBuffer = VBO()
@@ -24,11 +25,14 @@ class StaticSceneObject:
     
     def __genIndicesBuffer(self, indices):
         self.indicesBuffer = IBO()
-        self.indicesBuffer.setIndices(np.array(indices, dtype="byte"), len(indices))
+        self.indicesBuffer.setIndices(np.array(indices, dtype="byte"))
     
     def __genColorBuffer(self, colors):
         self.colorBuffer = VBO()
         self.colorBuffer.setData(np.array(colors, dtype="float32"), 3)
+    
+    def addChildObject(self, obj):
+        self.__childObjects.add(obj)
     
     def render(self):
         self.vertexBuffer.setSlot(0)
@@ -40,3 +44,6 @@ class StaticSceneObject:
         self.colorBuffer.disable()
 
         self.indicesBuffer.unbind()
+
+        for i in self.__childObjects:
+            i.render()
