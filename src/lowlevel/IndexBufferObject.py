@@ -19,16 +19,16 @@ class IBO:
     def unbind():
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0)
     
-    def setIndices(self, indices: np.ndarray, indexCount: int):
+    def setIndices(self, indices: np.ndarray):
         self.bind()
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW)
-        self.__indexCount = indexCount
+        self.__indexCount = indices.size
         self.unbind()
     
-    def render(self):
+    def render(self, mode=GL_QUADS):
         """------------------------
         Don't forget to bind a VBO!
         ------------------------"""
         self.bind()
-        glDrawElements(GL_QUADS, 24, GL_UNSIGNED_BYTE, None)
+        glDrawElements(mode, self.__indexCount, GL_UNSIGNED_BYTE, None)
         self.unbind()
