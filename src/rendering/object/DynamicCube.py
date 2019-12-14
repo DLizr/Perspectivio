@@ -1,4 +1,5 @@
 from src.rendering.object.DynamicSceneObject import DynamicSceneObject
+from src.rendering.object.Wireframe import Wireframe
 
 
 class DynamicCube(DynamicSceneObject):
@@ -16,6 +17,7 @@ class DynamicCube(DynamicSceneObject):
         if not colors:
             colors = [1.0] * 24
         super().__init__(vertices, indices, colors)
+        self.__genWireframe(vertices)
     
     def genVertices(self) -> list:
         vertices = []
@@ -28,8 +30,10 @@ class DynamicCube(DynamicSceneObject):
                                      float(self.__centerPos[2] + z)])
         return vertices
     
-    def move(self, x: float, y: float, z: float):
-        self.__centerPos[0] += x
-        self.__centerPos[1] += y
-        self.__centerPos[2] += z
-        super().move(x, y, z)
+    def __genWireframe(self, vertices):
+        indices = [0, 1, 1, 3, 3, 2, 2, 0,
+                   2, 6, 6, 4, 4, 0,
+                   6, 7, 7, 5, 5, 4,
+                   7, 3, 1, 5]
+        color = [0, 0, 0]
+        self.addChildObject(Wireframe(vertices, indices, color))

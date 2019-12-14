@@ -15,6 +15,7 @@ class Main:
         pg.display.set_mode(SIZE, DOUBLEBUF|OPENGL)
         glEnable(GL_DEPTH_TEST)
         glDepthFunc(GL_LESS)
+        glClearColor(0.8, 0.8, 1, 1)
         self.running = True
         self.initGame(*SIZE)
         self.gameLoop()

@@ -19,7 +19,7 @@ class Game:
         self.__world.addObject(-1, 0, 0, StaticCube([-2, 0, 0], 2))
         self.__world.addObject(0, 0, -1, StaticCube([0, 0, -2], 2))
 
-        self.__world.addDynamicObject(0, 1, -1, DynamicCube([0, 2, -2], 2, [0, 0, 1] * 8), "Player")
+        self.__world.addDynamicObject(0, 1, -1, DynamicCube([0, 2, 0], 2, [0, 0, 1] * 8), "Player")
     
     def render(self):
         self.__viewpoint.useShader()
@@ -28,12 +28,15 @@ class Game:
     
     def moveX(self, name: str, dX: float):
         self.__world.getScene().getDynamicObject(name).moveX(dX)
+        # self.__viewpoint.moveCamera(dX, 0, 0)  Ugly
         # TODO: move in the field
 
     def moveY(self, name: str, dY: float):
         self.__world.getScene().getDynamicObject(name).moveY(dY)
+        # self.__viewpoint.moveCamera(0, dY, 0)  Ugly
         # TODO: move in the field
 
     def moveZ(self, name: str, dZ: float):
         self.__world.getScene().getDynamicObject(name).moveZ(dZ)
+        # self.__viewpoint.moveCamera(0, 0, dZ)  Ugly
         # TODO: move in the field

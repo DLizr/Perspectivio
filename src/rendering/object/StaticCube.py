@@ -8,7 +8,6 @@ class StaticCube(StaticSceneObject):
         self.__centerPos = centerPosition
         self.__width = width
         vertices = self.genVertices()
-        print(vertices)
         indices = [1, 3, 7, 5, 
                    3, 2, 6, 7, 
                    2, 6, 4, 0, 

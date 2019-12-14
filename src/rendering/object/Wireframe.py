@@ -26,6 +26,9 @@ class Wireframe:
         self.colorBuffer = VBO()
         self.colorBuffer.setData(np.array(color * count, dtype="float32"), 3)
     
+    def updateVertices(self, vertices: np.ndarray):
+        self.vertexBuffer.updateData(vertices)
+    
     def render(self):
         self.vertexBuffer.setSlot(0)
         self.colorBuffer.setSlot(1)
