@@ -9,11 +9,11 @@ class Field:
     def removeObject(self, x: int, y: int, z: int):
         self.__field[x][y][z] = None
     
-    def canMoveTo(self, x: int, y: int, z: int) -> bool:
+    def canObjectMoveTo(self, obj, x: int, y: int, z: int) -> bool:
         if x<0 or y<0 or z<0:
             return False
         try:
-            return not self.__field[x][y][z]  # None -> True; Object -> False
+            return self.__field[x][y][z] == obj or not self.__field[x][y][z]  # An object can stay in its own position and move to an empty cell.
         except IndexError:
             return False
     

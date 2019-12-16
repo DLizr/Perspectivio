@@ -21,11 +21,17 @@ class World:
     
     def moveDynamicObject(self, name: str, dX: float, dY: float, dZ: float):
         obj = self.__scene.getDynamicObject(name)
-        pos = obj.getPosition().astype(int)
-        fieldPos = pos // self.cubeWidth
-        newFieldPos = (pos + (dX, dY, dZ)) // self.cubeWidth
 
-        if not np.array_equal(fieldPos, newFieldPos) and not self.__field.canMoveTo(*newFieldPos):
+        pos = obj.getPosition()
+        newPos = pos + (dX, dY, dZ)
+
+        if newPos.min() < 0:
+            return
+
+        fieldPos = (pos // self.cubeWidth).astype(int)
+        newFieldPos = newPos.astype(int) // self.cubeWidth
+
+        if not self.__field.canObjectMoveTo(obj, *newFieldPos):
             return
 
         self.__field.moveObject(*fieldPos, *newFieldPos)

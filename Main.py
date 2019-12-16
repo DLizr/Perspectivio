@@ -17,6 +17,7 @@ class Main:
         glDepthFunc(GL_LESS)
         glClearColor(0.8, 0.8, 1, 1)
         self.running = True
+        self.x, self.y, self.z = 0, 0, 0
         self.initGame(*SIZE)
         self.gameLoop()
     
@@ -41,23 +42,26 @@ class Main:
                 self.running = False
             elif event.type == pg.KEYDOWN:
                 if event.key == pg.K_LEFT:
-                    self.__game.moveX("Player", -2)
+                    self.x = 0.1
                 elif event.key == pg.K_RIGHT:
-                    self.__game.moveX("Player", 2)
+                    self.x = -0.1
                 elif event.key == pg.K_UP:
-                    self.__game.moveZ("Player", -2)
+                    self.z = 0.1
                 elif event.key == pg.K_DOWN:
-                    self.__game.moveZ("Player", 2)
+                    self.z = -0.1
             
             elif event.type == pg.KEYUP:
                 if event.key == pg.K_LEFT:
-                    pass
+                    self.x = 0
                 elif event.key == pg.K_RIGHT:
-                    pass
+                    self.x = 0
                 elif event.key == pg.K_UP:
-                    pass
+                    self.z = 0
                 elif event.key == pg.K_DOWN:
-                    pass
+                    self.z = 0
+
+        if any((self.x, self.y, self.z)):
+            self.__game.move("Player", self.x, self.y, self.z)
     
     def render(self):
         self.__game.render()
