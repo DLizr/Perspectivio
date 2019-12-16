@@ -1,6 +1,3 @@
-import numpy as np
-
-
 class Field:
 
     def __init__(self, width: int, height: int, depth: int):
@@ -11,5 +8,21 @@ class Field:
     
     def removeObject(self, x: int, y: int, z: int):
         self.__field[x][y][z] = None
+    
+    def canMoveTo(self, x: int, y: int, z: int) -> bool:
+        if x<0 or y<0 or z<0:
+            return False
+        try:
+            return not self.__field[x][y][z]  # None -> True; Object -> False
+        except IndexError:
+            return False
+    
+    def moveObject(self, x1: int, y1: int, z1: int, x2: int, y2: int, z2: int):
+        try:
+            obj = self.__field[x1][y1][z1]
+            self.__field[x1][y1][z1] = None
+            self.__field[x2][y2][z2] = obj
+        except IndexError:
+            raise IndexError("Moving out of the field")
     
     # TODO: Collision, movement, borders.

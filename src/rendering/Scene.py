@@ -1,5 +1,4 @@
-import numpy as np
-
+from src.rendering.object.DynamicSceneObject import DynamicSceneObject
 
 class Scene:
 
@@ -19,7 +18,7 @@ class Scene:
         if not res:
             raise KeyError("Dynamic Object with key '" + name + "' doesn't exist!")
     
-    def getDynamicObject(self, name):
+    def getDynamicObject(self, name) -> DynamicSceneObject:
         try:
             obj = self.__dynamicObjects[name]
         except KeyError:

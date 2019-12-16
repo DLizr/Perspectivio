@@ -1,13 +1,14 @@
 from src.rendering.object.DynamicSceneObject import DynamicSceneObject
 from src.rendering.object.Wireframe import Wireframe
 
+import numpy as np
+
 
 class DynamicCube(DynamicSceneObject):
 
     def __init__(self, centerPosition: list, width, colors: list=None):
-        self.__centerPos = centerPosition
         self.__width = width
-        vertices = self.genVertices()
+        vertices = self.genVertices(centerPosition)
         indices = [1, 3, 7, 5, 
                    3, 2, 6, 7, 
                    2, 6, 4, 0, 
@@ -17,17 +18,18 @@ class DynamicCube(DynamicSceneObject):
         if not colors:
             colors = [1.0] * 24
         super().__init__(vertices, indices, colors)
+        self._centerPosition = np.array(centerPosition, dtype="float32")
         self.__genWireframe(vertices)
     
-    def genVertices(self) -> list:
+    def genVertices(self, centerPos) -> list:
         vertices = []
         offset = [-self.__width / 2, self.__width / 2]
         for x in offset:
             for y in offset:
                 for z in offset:
-                    vertices.extend([float(self.__centerPos[0] + x), 
-                                     float(self.__centerPos[1] + y), 
-                                     float(self.__centerPos[2] + z)])
+                    vertices.extend([float(centerPos[0] + x), 
+                                     float(centerPos[1] + y), 
+                                     float(centerPos[2] + z)])
         return vertices
     
     def __genWireframe(self, vertices):
@@ -37,3 +39,6 @@ class DynamicCube(DynamicSceneObject):
                    7, 3, 1, 5]
         color = [0, 0, 0]
         self.addChildObject(Wireframe(vertices, indices, color))
+    
+    def getPosition(self) -> list:
+        return self._centerPosition.copy()
