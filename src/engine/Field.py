@@ -15,15 +15,12 @@ class Field:
     def removeObject(self, x: int, y: int, z: int):
         self.__field[x][y][z] = None
     
-    def canObjectMoveTo(self, obj, x: int, y: int, z: int) -> bool:
-        if x<0 or y<0 or z<0:
-            return False
-        try:
-            return self.__field[x][y][z] == obj or not self.__field[x][y][z]  # An object can stay in its own position and move to an empty cell.
-        except IndexError:
-            return False
+    def canMoveTo(self, x: int, y: int, z: int) -> bool:
+        return (0 <= x < self.__width and 
+                0 <= y < self.__height and 
+                0 <= z < self.__depth)
     
-    def __getTilesNearby(self, x: int, y: int, z: int):
+    def getTilesNearby(self, x: int, y: int, z: int):
         x1 = max(0, x-1)
         y1 = max(0, y-1)
         z1 = max(0, z-1)

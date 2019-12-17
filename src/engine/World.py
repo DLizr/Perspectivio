@@ -1,4 +1,6 @@
 from src.engine.Field import Field
+from src.engine.CollisionChecker import CollisionChecker
+
 from src.rendering.Scene import Scene
 
 import numpy as np
@@ -31,8 +33,17 @@ class World:
         fieldPos = (pos // self.cubeWidth).astype(int)
         newFieldPos = newPos.astype(int) // self.cubeWidth
 
-        if not self.__field.canObjectMoveTo(obj, *newFieldPos):  # FIXME: Pathetic collision detection.
+        if not self.__field.canMoveTo(*newFieldPos):
             return
+        
+        dynamicCube = (*newPos, obj.getWidth())
+        
+        for i in self.__field.getTilesNearby(*newFieldPos):
+            if not i or i == obj:
+                continue
+            cube = (*i.getPosition(), i.getWidth())  # TODO: If an object is not a cube?
+            if CollisionChecker.checkCollisionOfTwoCubes(dynamicCube, cube):
+                return
 
         self.__field.moveObject(*fieldPos, *newFieldPos)
         obj.moveX(dX) if dX else 0
