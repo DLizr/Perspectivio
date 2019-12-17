@@ -31,7 +31,7 @@ class World:
         fieldPos = (pos // self.cubeWidth).astype(int)
         newFieldPos = newPos.astype(int) // self.cubeWidth
 
-        if not self.__field.canObjectMoveTo(obj, *newFieldPos):
+        if not self.__field.canObjectMoveTo(obj, *newFieldPos):  # FIXME: Pathetic collision detection.
             return
 
         self.__field.moveObject(*fieldPos, *newFieldPos)

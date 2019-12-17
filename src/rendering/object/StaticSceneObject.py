@@ -18,6 +18,7 @@ class StaticSceneObject:
         self.__genIndicesBuffer(indices)
         self.__genColorBuffer(colors)
         self._childObjects = set()
+        self._centerPosition: np.ndarray = None
     
     def __genVertexBuffer(self, vertices):
         self.vertexBuffer = VBO()
@@ -47,3 +48,9 @@ class StaticSceneObject:
 
         for i in self._childObjects:
             i.render()
+    
+    def getPosition(self) -> np.ndarray:
+        """Returns a position.
+        Must be overriden by the actual object class.
+        ------------------"""
+        raise NotImplementedError("Create a subtype static object.")

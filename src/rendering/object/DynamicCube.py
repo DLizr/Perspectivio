@@ -42,3 +42,6 @@ class DynamicCube(DynamicSceneObject):
     
     def getPosition(self) -> list:
         return self._centerPosition.copy()
+    
+    def getWidth(self) -> int:
+        return self.__width

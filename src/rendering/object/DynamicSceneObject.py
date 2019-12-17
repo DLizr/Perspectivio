@@ -9,7 +9,7 @@ class DynamicSceneObject(StaticSceneObject):
 
         super().__init__(vertices, indices, colors)
         self.__vertices = np.array(vertices, dtype="float32")
-        self._centerPosition: np.ndarray = None  # ! Must be overriden.
+        self._centerPosition: np.ndarray = None
     
     def __updateVertices(self):
         self.vertexBuffer.updateData(self.__vertices)
