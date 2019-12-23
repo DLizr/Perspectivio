@@ -10,5 +10,4 @@ class Main:
 try:
     Main()
 except Exception as e:
-    pg.quit()
     raise e

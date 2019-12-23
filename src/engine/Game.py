@@ -6,22 +6,22 @@ from src.rendering.object.DynamicCube import DynamicCube
 
 
 class Game:
+    isDynamic = {"Player": True, "Cube": False}
 
     def __init__(self, width: int, height: int):
         self.__viewpoint = Viewpoint(width, height)
         self.__world = World(5, 5, 5)
-        self.placeObjects()
     
-    def placeObjects(self):  # FIXME: Demo mode.
-        self.__world.addObject(0, 0, 0, StaticCube([0, 0, 0], 2))
-        self.__world.addObject(1, 0, 0, StaticCube([2, 0, 0], 2))
-        self.__world.addObject(0, 0, 1, StaticCube([0, 0, 2], 2))
-        self.__world.addObject(-1, 0, 0, StaticCube([-2, 0, 0], 2))
-        self.__world.addObject(0, 0, -1, StaticCube([0, 0, -2], 2))
-        self.__world.addObject(2, 1, 2, StaticCube([4, 2, 4], 2))
+    def placeObject(self, x: int, y: int, z: int, name: str):
+        try:
+            if self.isDynamic[name]:
+                self.__world.addDynamicObject(x, y, z, DynamicCube([x, y, z], 2, [0, 0, 1] * 8), name)
+            else:
+                self.__world.addObject(x, y, z, StaticCube([x, y, z], 2))
+        
+        except KeyError:
+            return  # TODO: Idk what to do.
 
-        self.__world.addDynamicObject(0, 1, 0, DynamicCube([0, 2, 0], 2, [0, 0, 1] * 8), "Player")
-    
     def render(self):
         self.__viewpoint.useShader()
         self.__world.render()
