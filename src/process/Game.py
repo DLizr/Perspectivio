@@ -8,10 +8,12 @@ from src.rendering.object.DynamicCube import DynamicCube
 from src.input.GameKeyboardHander import GameKeyboardHandler
 
 from src.control.EventHandler import EventHandler
+
+from src.process.Process import Process
 # TODO: import GUI engine.
 
 
-class Game:
+class Game(Process):
     isDynamic = {"Player": True, "Cube": False}
 
     def __init__(self, width: int, height: int):
@@ -30,7 +32,7 @@ class Game:
         except KeyError:
             return  # TODO: Idk what to do.
 
-    def render(self):
+    def update(self):
         self.__eventHandler.handleEvents()
         self.__viewpoint.useShader()
         self.__world.render()

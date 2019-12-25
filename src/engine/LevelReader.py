@@ -1,4 +1,4 @@
-from src.engine.Game import Game
+from src.process.Game import Game
 
 
 class LevelReader:

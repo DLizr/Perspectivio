@@ -1,6 +1,6 @@
 from src.control.Window import Window
 
-from src.engine.Game import Game
+from src.process.Game import Game
 from src.engine.LevelReader import LevelReader
 
 
@@ -18,9 +18,13 @@ class Application:
     
     def mainLoop(self):
         while True:
-            self.__process.render()
+            self.__process.update()
             self.__window.update()
     
     def terminate(self):
         del self.__window
         del self.__process
+    
+    def setProcess(self, process):
+        del self.__process
+        self.__process = process
