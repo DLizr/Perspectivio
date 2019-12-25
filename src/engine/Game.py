@@ -1,7 +1,13 @@
 from src.engine.World import World
+
 from src.view.Viewpoint import Viewpoint
+
 from src.rendering.object.StaticCube import StaticCube
 from src.rendering.object.DynamicCube import DynamicCube
+
+from src.input.GameKeyboardHander import GameKeyboardHandler
+
+from src.control.EventHandler import EventHandler
 # TODO: import GUI engine.
 
 
@@ -11,6 +17,8 @@ class Game:
     def __init__(self, width: int, height: int):
         self.__viewpoint = Viewpoint(width, height)
         self.__world = World(5, 5, 5)
+        self.__eventHandler = EventHandler()
+        self.__eventHandler.setKeyboardHandler(GameKeyboardHandler(self))
     
     def placeObject(self, x: int, y: int, z: int, name: str):
         try:
@@ -23,6 +31,7 @@ class Game:
             return  # TODO: Idk what to do.
 
     def render(self):
+        self.__eventHandler.handleEvents()
         self.__viewpoint.useShader()
         self.__world.render()
         self.__viewpoint.unuseShader()

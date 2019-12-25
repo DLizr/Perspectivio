@@ -1,12 +1,11 @@
 import pygame as pg
 
 from src.input.IKeyboardHandler import IKeyboardHandler
-from src.engine.Game import Game
 
 
 class GameKeyboardHandler(IKeyboardHandler):
     
-    def __init__(self, game: Game):
+    def __init__(self, game):
         self.__game = game
     
     # Override
