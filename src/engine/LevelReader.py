@@ -2,6 +2,7 @@ from src.process.Game import Game
 
 
 class LevelReader:
+    cubeWidth = 2
 
     def loadLevel(self, game: Game, filename: str):
         self.filename = filename
@@ -13,7 +14,7 @@ class LevelReader:
                 if not line or line.startswith("#"):
                     continue
                 x, y, z, name = self.__getDataIfCorrect(line)
-                game.placeObject(int(x), int(y), int(z), name)
+                game.placeObject(int(x) * self.cubeWidth, int(y) * self.cubeWidth, int(z) * self.cubeWidth, name)
                     
     
     def __getDataIfCorrect(self, line):

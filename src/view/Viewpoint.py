@@ -7,7 +7,7 @@ from src.lowlevel.Shader import Shader
 class Viewpoint:
 
     def __init__(self, width: int, height: int):
-        self.__camera = Camera(-8, 8, -8)
+        self.__camera = Camera(-6, 6, -6)
         self.__camera.setProjectionMatrix(60, width, height, 0.01, 100)
 
         self.__shader = Shader()
