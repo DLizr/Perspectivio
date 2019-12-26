@@ -49,6 +49,27 @@ class World:
         obj.moveX(dX) if dX else 0
         obj.moveY(dY) if dY else 0
         obj.moveZ(dZ) if dZ else 0
+
+        return True
+
+    def getObjectsCollidingAfterMoving(self, name: str, dX: float, dY: float, dZ: float):
+        objects = set()
+        obj = self.__scene.getDynamicObject(name)
+
+        pos = obj.getPosition()
+        newPos = pos + (dX, dY, dZ)
+        newFieldPos = newPos.astype(int) // self.cubeWidth
+
+        dynamicObj = (*newPos, obj.getWidth())
+
+        for i in self.__field.getTilesNearby(*newFieldPos):
+            if not i or i == obj:
+                continue
+            otherObj = (*i.getPosition(), i.getWidth())
+            if CollisionChecker.checkCollisionOfTwoCubes(dynamicObj, otherObj):
+                objects.add(i)
+
+        return objects
     
     def getScene(self) -> Scene:
         return self.__scene

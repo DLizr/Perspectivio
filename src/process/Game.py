@@ -39,4 +39,12 @@ class Game(Process):
         self.__viewpoint.unuseShader()
     
     def move(self, name: str, dX: float, dY: float, dZ: float):
-        self.__world.moveDynamicObject(name, dX, dY, dZ)
+        moved = self.__world.moveDynamicObject(name, dX, dY, dZ)
+        if not moved:
+            objects = self.__world.getObjectsCollidingAfterMoving(name, dX, dY, dZ)
+            self.__checkForSpike(objects)
+
+    def __checkForSpike(self, objects):
+        for i in objects:
+            if type(i) == StaticPyramid:
+                print("YOU DIED")
