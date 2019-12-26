@@ -45,6 +45,9 @@ class StaticPyramid(StaticSceneObject):
     def getPosition(self):
         return self._centerPosition.copy()
 
+    def getWidth(self):
+        return self.__side
+
     # Override
     def render(self):
         super().render(GL_TRIANGLES)

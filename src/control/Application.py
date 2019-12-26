@@ -20,6 +20,7 @@ class Application:
         while True:
             self.__process.update()
             self.__window.update()
+
     
     def terminate(self):
         del self.__window

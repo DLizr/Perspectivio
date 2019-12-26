@@ -14,7 +14,7 @@ class World:
         self.__scene = Scene()
     
     def addObject(self, x: int, y: int, z: int, obj):
-        self.__field.placeObject(x, y, z, obj)
+        self.__field.placeObject(x // self.cubeWidth, y // self.cubeWidth, z // self.cubeWidth, obj)
         self.__scene.putObject(obj)
     
     def addDynamicObject(self, x: int, y: int, z: int, obj, name: str):
@@ -36,21 +36,19 @@ class World:
         if not self.__field.canMoveTo(*newFieldPos):
             return
         
-        dynamicCube = (*newPos, obj.getWidth())
+        dynamicObj = (*newPos, obj.getWidth())
         
         for i in self.__field.getTilesNearby(*newFieldPos):
             if not i or i == obj:
                 continue
-            cube = (*i.getPosition(), i.getWidth())  # TODO: If an object is not a cube?
-            # FIXME: Pyramid collision raises an exception.
-            if CollisionChecker.checkCollisionOfTwoCubes(dynamicCube, cube):
+            otherObj = (*i.getPosition(), i.getWidth())
+            if CollisionChecker.checkCollisionOfTwoCubes(dynamicObj, otherObj):
                 return
 
         self.__field.moveObject(*fieldPos, *newFieldPos)
         obj.moveX(dX) if dX else 0
         obj.moveY(dY) if dY else 0
         obj.moveZ(dZ) if dZ else 0
-        
     
     def getScene(self) -> Scene:
         return self.__scene

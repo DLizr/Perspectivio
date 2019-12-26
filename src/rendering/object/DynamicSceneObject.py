@@ -35,6 +35,9 @@ class DynamicSceneObject(StaticSceneObject):
         Must be overriden by the actual object class.
         ------------------"""
         raise NotImplementedError("Create a subtype dynamic object!")
+
+    def getWidth(self):
+        raise NotImplementedError("Create a subtype dynamic object!")
     
     def __moveWireframe(self):
         for i in self._childObjects:
