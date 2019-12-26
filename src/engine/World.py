@@ -42,6 +42,7 @@ class World:
             if not i or i == obj:
                 continue
             cube = (*i.getPosition(), i.getWidth())  # TODO: If an object is not a cube?
+            # FIXME: Pyramid collision raises an exception.
             if CollisionChecker.checkCollisionOfTwoCubes(dynamicCube, cube):
                 return
 

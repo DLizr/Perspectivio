@@ -3,6 +3,8 @@ import numpy as np
 from src.lowlevel.VertexBufferObject import VBO
 from src.lowlevel.IndexBufferObject import IBO
 
+from OpenGL.GL import GL_QUADS
+
 
 class StaticSceneObject:
 
@@ -35,11 +37,11 @@ class StaticSceneObject:
     def addChildObject(self, obj):
         self._childObjects.add(obj)
     
-    def render(self):
+    def render(self, mode=GL_QUADS):
         self.vertexBuffer.setSlot(0)
         self.colorBuffer.setSlot(1)
 
-        self.indicesBuffer.render()
+        self.indicesBuffer.render(mode)
 
         self.vertexBuffer.disable()
         self.colorBuffer.disable()
