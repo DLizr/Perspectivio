@@ -9,10 +9,12 @@ class Camera:
         self.__y = y
         self.__z = z
         self.__projectionMatrix: np.ndarray = None
-        self.__target = np.array([0, 0, 0], dtype="float32")
+        self.__orthogonalMatrix: np.ndarray = None
+        self.__target = np.array([2, 2, 2], dtype="float32")
     
     def setProjectionMatrix(self, FOV: int, width: int, height: int, near: float, far: float):
         self.__projectionMatrix = np.transpose(pyrr.matrix44.create_perspective_projection(FOV, width/height, near, far))
+        self.__orthogonalMatrix = np.transpose(pyrr.matrix44.create_orthogonal_projection_matrix(0, width, 0, height, -1000, 1000))
     
     def moveX(self, dX: float):
         self.__x += dX
@@ -28,6 +30,14 @@ class Camera:
     
     def getProjectionMatrix(self) -> np.ndarray:
         return self.__projectionMatrix
+    
+    def getOrthogonalMatrix(self) -> np.ndarray:
+        return self.__orthogonalMatrix
+    
+    def getModelMatrix(self):
+        translation= np.transpose(pyrr.matrix44.create_from_translation(pyrr.Vector3([3, 1, 0])))
+        scale= pyrr.matrix44.create_from_scale(pyrr.Vector3([50, 50, 50]))
+        return np.matmul(scale, translation)
     
     def getEye(self) -> np.ndarray:
         return np.array([self.__x, self.__y, self.__z], dtype="float32")

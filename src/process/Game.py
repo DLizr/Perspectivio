@@ -47,4 +47,4 @@ class Game(Process):
     def __checkForSpike(self, objects):
         for i in objects:
             if type(i) == StaticPyramid:
-                print("YOU DIED")
+                self.__viewpoint.switchTo2D()
