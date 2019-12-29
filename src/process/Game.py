@@ -5,6 +5,7 @@ from src.view.Viewpoint import Viewpoint
 from src.rendering.object.StaticCube import StaticCube
 from src.rendering.object.DynamicCube import DynamicCube
 from src.rendering.object.StaticPyramid import StaticPyramid
+from src.rendering.object.Powerup import Powerup
 
 from src.input.GameKeyboardHander import GameKeyboardHandler
 
@@ -29,6 +30,8 @@ class Game(Process):
             self.__world.addObject(x, y, z, StaticCube([x, y, z], 2))
         elif name == "Spike":
             self.__world.addObject(x, y, z, StaticPyramid([x, y, z], 2))
+        elif name == "Powerup":
+            self.__world.addObject(x, y, z, Powerup([x, y, z], 2))
         else:
             return  # Exception?
 

@@ -26,11 +26,11 @@ class StaticPyramid(StaticSceneObject):
     def __genVertices(self, pos) -> list:
         halfSide = self.__side / 2
         vertices = [
-            pos[0], pos[1] + self.__side, pos[2],  # Top.
-            pos[0] + halfSide, pos[1], pos[2] + halfSide,  # -
-            pos[0] + halfSide, pos[1], pos[2] - halfSide,  # - The Bottom Square.
-            pos[0] - halfSide, pos[1], pos[2] + halfSide,  # -
-            pos[0] - halfSide, pos[1], pos[2] - halfSide,  # -
+            pos[0], pos[1] + halfSide, pos[2],  # Top.
+            pos[0] + halfSide, pos[1] - halfSide, pos[2] + halfSide,  # -
+            pos[0] + halfSide, pos[1] - halfSide, pos[2] - halfSide,  # - The Bottom Square.
+            pos[0] - halfSide, pos[1] - halfSide, pos[2] + halfSide,  # -
+            pos[0] - halfSide, pos[1] - halfSide, pos[2] - halfSide,  # -
         ]
         return vertices
     
