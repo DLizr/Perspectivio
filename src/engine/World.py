@@ -18,10 +18,11 @@ class World:
         self.__scene.putObject(obj)
     
     def addDynamicObject(self, x: int, y: int, z: int, obj, name: str):
-        self.__field.placeObject(x, y, z, obj)
+        self.__field.placeObject(x // self.cubeWidth, y // self.cubeWidth, z // self.cubeWidth, obj)
         self.__scene.putDynamicObject(name, obj)
     
     def moveDynamicObject(self, name: str, dX: float, dY: float, dZ: float):
+        """Collision isn't checked!"""
         obj = self.__scene.getDynamicObject(name)
 
         pos = obj.getPosition()
@@ -35,15 +36,6 @@ class World:
 
         if not self.__field.canMoveTo(*newFieldPos):
             return
-        
-        dynamicObj = (*newPos, obj.getWidth())
-        
-        for i in self.__field.getTilesNearby(*newFieldPos):
-            if not i or i == obj:
-                continue
-            otherObj = (*i.getPosition(), i.getWidth())
-            if CollisionChecker.checkCollisionOfTwoCubes(dynamicObj, otherObj):
-                return
 
         self.__field.moveObject(*fieldPos, *newFieldPos)
         obj.moveX(dX) if dX else 0
@@ -52,21 +44,17 @@ class World:
 
         return True
 
-    def getObjectsCollidingAfterMoving(self, name: str, dX: float, dY: float, dZ: float):
+    def getObjectsColliding(self, name: str):
         objects = set()
         obj = self.__scene.getDynamicObject(name)
 
         pos = obj.getPosition()
-        newPos = pos + (dX, dY, dZ)
-        newFieldPos = newPos.astype(int) // self.cubeWidth
+        fieldPos = pos.astype(int) // self.cubeWidth
 
-        dynamicObj = (*newPos, obj.getWidth())
-
-        for i in self.__field.getTilesNearby(*newFieldPos):
+        for i in self.__field.getTilesNearby(*fieldPos):
             if not i or i == obj:
                 continue
-            otherObj = (*i.getPosition(), i.getWidth())
-            if CollisionChecker.checkCollisionOfTwoCubes(dynamicObj, otherObj):
+            if CollisionChecker.checkCollision(obj, i):
                 objects.add(i)
 
         return objects

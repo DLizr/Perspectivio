@@ -77,9 +77,16 @@ class Powerup(StaticSceneObject):
         return self._centerPosition.copy()
 
     def getWidth(self):
+        return self.__width / 2
+    
+    def getHeight(self):
         return self.__width
 
     # Override
     def render(self):
         super().render(GL_TRIANGLES)
+    
+    @staticmethod
+    def getShape():
+        return "Rectangle"
         

@@ -51,3 +51,7 @@ class StaticPyramid(StaticSceneObject):
     # Override
     def render(self):
         super().render(GL_TRIANGLES)
+    
+    @staticmethod
+    def getShape():
+        return "Cube"

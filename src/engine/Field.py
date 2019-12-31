@@ -33,6 +33,8 @@ class Field:
     def moveObject(self, x1: int, y1: int, z1: int, x2: int, y2: int, z2: int):
         try:
             obj = self.__field[x1][y1][z1]
+            if self.__field[x2][y2][z2] != obj and self.__field[x2][y2][z2]:
+                return
             self.__field[x1][y1][z1] = None
             self.__field[x2][y2][z2] = obj
         except IndexError:

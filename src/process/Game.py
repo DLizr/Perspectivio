@@ -31,7 +31,7 @@ class Game(Process):
         elif name == "Spike":
             self.__world.addObject(x, y, z, StaticPyramid([x, y, z], 2))
         elif name == "Powerup":
-            self.__world.addObject(x, y, z, Powerup([x, y, z], 2))
+            self.__world.addDynamicObject(x, y, z, Powerup([x, y, z], 2), name)
         else:
             return  # Exception?
 
@@ -42,12 +42,16 @@ class Game(Process):
         self.__viewpoint.unuseShader()
     
     def move(self, name: str, dX: float, dY: float, dZ: float):
-        moved = self.__world.moveDynamicObject(name, dX, dY, dZ)
-        if not moved:
-            objects = self.__world.getObjectsCollidingAfterMoving(name, dX, dY, dZ)
-            self.__checkForSpike(objects)
+        self.__world.moveDynamicObject(name, dX, dY, dZ)
+        objectsCollided = self.__world.getObjectsColliding(name)
+        if self.__checkCollidedObjects(objectsCollided):
+            self.__world.moveDynamicObject(name, -dX, -dY, -dZ)
 
-    def __checkForSpike(self, objects):
+    def __checkCollidedObjects(self, objects):
         for i in objects:
             if type(i) == StaticPyramid:
-                self.__viewpoint.switchTo2D()
+                return True
+            elif type(i) == StaticCube:
+                return True
+            elif type(i) == Powerup:
+                return True
