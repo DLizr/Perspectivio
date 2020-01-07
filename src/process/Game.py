@@ -7,6 +7,10 @@ from src.rendering.object.DynamicCube import DynamicCube
 from src.rendering.object.StaticPyramid import StaticPyramid
 from src.rendering.object.Powerup import Powerup
 
+from src.action.powerup.RotationPowerupUp import RotationPowerupUp
+from src.action.powerup.RotationPowerupX import RotationPowerupX
+from src.action.powerup.RotationPowerupZ import RotationPowerupZ
+
 from src.input.GameKeyboardHander import GameKeyboardHandler
 
 from src.control.EventHandler import EventHandler
@@ -30,8 +34,18 @@ class Game(Process):
             self.__world.addObject(x, y, z, StaticCube([x, y, z], 2))
         elif name == "Spike":
             self.__world.addObject(x, y, z, StaticPyramid([x, y, z], 2))
-        elif name == "Powerup":
-            self.__world.addDynamicObject(x, y, z, Powerup([x, y, z], 2), name)
+        elif name == "RPowerupUp":
+            powerup = Powerup([x, y, z], 2)
+            powerup.setAction(RotationPowerupUp(powerup))
+            self.__world.addDynamicObject(x, y, z, powerup, name)
+        elif name == "RPowerupX":
+            powerup = Powerup([x, y, z], 2)
+            powerup.setAction(RotationPowerupX(powerup))
+            self.__world.addDynamicObject(x, y, z, powerup, name)
+        elif name == "RPowerupZ":
+            powerup = Powerup([x, y, z], 2)
+            powerup.setAction(RotationPowerupZ(powerup))
+            self.__world.addDynamicObject(x, y, z, powerup, name)
         else:
             return  # Exception?
 
@@ -54,4 +68,8 @@ class Game(Process):
             elif type(i) == StaticCube:
                 return True
             elif type(i) == Powerup:
+                i.onImpact(self)
                 return True
+    
+    def setProjectionMatrix(self, matrix):
+        self.__viewpoint.setMatrix(matrix)

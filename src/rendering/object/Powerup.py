@@ -8,6 +8,7 @@ class Powerup(StaticSceneObject):
 
     def __init__(self, centerPosition: list, width, colors: list=None):
         self.__width = width
+        self.__action = None
         vertices = self.__genVertices(centerPosition)
 
         indices = [
@@ -71,6 +72,13 @@ class Powerup(StaticSceneObject):
             5, 9, 6, 9, 7, 9, 8, 9
         ]
         self.addChildObject(Wireframe(vertices, indices, [0, 0, 0]))
+    
+    def setAction(self, action):
+        self.__action = action
+    
+    def onImpact(self, game):
+        if self.__action:
+            self.__action.onImpact(game)
     
     # Override
     def getPosition(self):

@@ -7,7 +7,7 @@ from src.lowlevel.Shader import Shader
 class Viewpoint:
 
     def __init__(self, width: int, height: int):
-        self.__camera = Camera(12, 6, 12)
+        self.__camera = Camera(8, 6, 12)
         self.__camera.setProjectionMatrix(60, width, height, 0.01, 100)
 
         self.__shader = Shader()
@@ -28,6 +28,9 @@ class Viewpoint:
         projMatrix = self.__camera.getProjectionMatrix()
         PV = np.matmul(projMatrix, viewMatrix)
         self.__shader.setUniform("MVP", PV)
+    
+    def setMatrix(self, matrix):
+        self.__shader.setUniform("MVP", matrix)
     
     def useShader(self):
         self.__shader.use()
