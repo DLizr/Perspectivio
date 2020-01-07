@@ -69,7 +69,7 @@ class Game(Process):
                 return True
             elif type(i) == Powerup:
                 i.onImpact(self)
-                return True
+                return False
     
     def setProjectionMatrix(self, matrix):
         self.__viewpoint.setMatrix(matrix)
