@@ -1,12 +1,63 @@
+from src.rendering.object.StaticCube import StaticCube
+from src.rendering.object.DynamicCube import DynamicCube
+from src.rendering.object.StaticPyramid import StaticPyramid
+from src.rendering.object.Powerup import Powerup
+
+
 class CollisionChecker:
 
     @staticmethod
-    def checkCollisionOfTwoCubes(cube1, cube2):
-        """Cube: (centerX, centerY, centerZ, width)"""
-        widthSum = (cube1[3] + cube2[3]) / 2
+    def checkCollision(obj1, obj2, ignoreX, ignoreY, ignoreZ):
+        if obj1.getShape() == "Cube" and obj2.getShape() == "Cube":
+            return CollisionChecker.checkCollisionOfTwoCubes(obj1, obj2, ignoreX, ignoreY, ignoreZ)
+        elif obj1.getShape() == "Cube" and obj2.getShape() == "Rectangle":
+            return CollisionChecker.checkCollisionOfCubeAndRectangle(obj1, obj2, ignoreX, ignoreY, ignoreZ)
+    
+    @staticmethod
+    def checkTouch(obj1, obj2, ignoreX, ignoreY, ignoreZ):
+        if obj1.getShape() == "Cube" and obj2.getShape() == "Cube":
+            return CollisionChecker.checkTouchOfTwoCubes(obj1, obj2, ignoreX, ignoreY, ignoreZ)
 
-        if abs(cube1[0] - cube2[0]) < widthSum:
-            if abs(cube1[1] - cube2[1]) < widthSum:
-                if abs(cube1[2] - cube2[2]) < widthSum:
+    @staticmethod
+    def checkCollisionOfTwoCubes(cube1, cube2, ignoreX, ignoreY, ignoreZ):
+        pos1 = cube1.getPosition()
+        pos2 = cube2.getPosition()
+        width1 = cube1.getWidth()
+        width2 = cube2.getWidth()
+        widthSum = (width1 + width2) / 2
+
+        if abs(pos1[0] - pos2[0]) < widthSum or ignoreX:
+            if abs(pos1[1] - pos2[1]) < widthSum or ignoreY:
+                if abs(pos1[2] - pos2[2]) < widthSum or ignoreZ:
                     return True
-        return False   
+        return False
+    
+    @staticmethod
+    def checkCollisionOfCubeAndRectangle(cube, rect, ignoreX, ignoreY, ignoreZ):
+        pos1 = cube.getPosition()
+        pos2 = rect.getPosition()
+        width1 = cube.getWidth()
+        width2 = rect.getWidth()
+        height2 = rect.getHeight()
+        widthSum = (width1 + width2) / 2
+        heightSum = (width1 + height2) / 2
+
+        if abs(pos1[0] - pos2[0]) < widthSum or ignoreX:
+            if abs(pos1[1] - pos2[1]) < heightSum or ignoreY:
+                if abs(pos1[2] - pos2[2]) < widthSum or ignoreZ:
+                    return True
+        return False
+    
+    @staticmethod
+    def checkTouchOfTwoCubes(cube1, cube2, ignoreX, ignoreY, ignoreZ):
+        pos1 = cube1.getPosition()
+        pos2 = cube2.getPosition()
+        width1 = cube1.getWidth()
+        width2 = cube2.getWidth()
+        widthSum = (width1 + width2) / 2
+
+        if abs(pos1[0] - pos2[0]) <=  widthSum or ignoreX:
+            if abs(pos1[1] - pos2[1]) <= widthSum or ignoreY:
+                if abs(pos1[2] - pos2[2]) <=  widthSum or ignoreZ:
+                    return True
+        return False

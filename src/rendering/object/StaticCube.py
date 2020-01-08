@@ -45,3 +45,7 @@ class StaticCube(StaticSceneObject):
     
     def getWidth(self) -> int:
         return self.__width
+    
+    @staticmethod
+    def getShape():
+        return "Cube"

@@ -5,6 +5,11 @@ from src.view.Viewpoint import Viewpoint
 from src.rendering.object.StaticCube import StaticCube
 from src.rendering.object.DynamicCube import DynamicCube
 from src.rendering.object.StaticPyramid import StaticPyramid
+from src.rendering.object.Powerup import Powerup
+
+from src.action.powerup.RotationPowerupUp import RotationPowerupUp
+from src.action.powerup.RotationPowerupX import RotationPowerupX
+from src.action.powerup.RotationPowerupZ import RotationPowerupZ
 
 from src.input.GameKeyboardHander import GameKeyboardHandler
 
@@ -21,6 +26,9 @@ class Game(Process):
         self.__world = World(5, 5, 5)
         self.__eventHandler = EventHandler()
         self.__eventHandler.setKeyboardHandler(GameKeyboardHandler(self))
+        self.__ignoreX = False
+        self.__ignoreY = False
+        self.__ignoreZ = False
     
     def placeObject(self, x: int, y: int, z: int, name: str):
         if name == "Player":
@@ -29,6 +37,18 @@ class Game(Process):
             self.__world.addObject(x, y, z, StaticCube([x, y, z], 2))
         elif name == "Spike":
             self.__world.addObject(x, y, z, StaticPyramid([x, y, z], 2))
+        elif name == "RPowerupUp":
+            powerup = Powerup([x, y, z], 2)
+            powerup.setAction(RotationPowerupUp(powerup))
+            self.__world.addDynamicObject(x, y, z, powerup, name)
+        elif name == "RPowerupX":
+            powerup = Powerup([x, y, z], 2)
+            powerup.setAction(RotationPowerupX(powerup))
+            self.__world.addDynamicObject(x, y, z, powerup, name)
+        elif name == "RPowerupZ":
+            powerup = Powerup([x, y, z], 2)
+            powerup.setAction(RotationPowerupZ(powerup))
+            self.__world.addDynamicObject(x, y, z, powerup, name)
         else:
             return  # Exception?
 
@@ -39,12 +59,25 @@ class Game(Process):
         self.__viewpoint.unuseShader()
     
     def move(self, name: str, dX: float, dY: float, dZ: float):
-        moved = self.__world.moveDynamicObject(name, dX, dY, dZ)
-        if not moved:
-            objects = self.__world.getObjectsCollidingAfterMoving(name, dX, dY, dZ)
-            self.__checkForSpike(objects)
+        self.__world.moveDynamicObject(name, dX, dY, dZ)
+        objectsCollided = self.__world.getObjectsColliding(name, ignoreX=self.__ignoreX, ignoreY=self.__ignoreY, ignoreZ=self.__ignoreZ)
+        isFloating = self.__world.checkIfObjectIsFloating(name, ignoreX=self.__ignoreX, ignoreY=self.__ignoreY, ignoreZ=self.__ignoreZ)
+        if self.__checkCollidedObjects(objectsCollided) or isFloating:
+            self.__world.moveDynamicObject(name, -dX, -dY, -dZ)
 
-    def __checkForSpike(self, objects):
+    def __checkCollidedObjects(self, objects):
         for i in objects:
             if type(i) == StaticPyramid:
-                print("YOU DIED")
+                return True
+            elif type(i) == StaticCube:
+                return True
+            elif type(i) == Powerup:
+                i.onImpact(self)
+    
+    def setProjectionMatrix(self, matrix):
+        self.__viewpoint.setMatrix(matrix)
+    
+    def setIgnoreXYZ(self, ignoreX, ignoreY, ignoreZ):
+        self.__ignoreX = bool(ignoreX)
+        self.__ignoreY = bool(ignoreY)
+        self.__ignoreZ = bool(ignoreZ)
