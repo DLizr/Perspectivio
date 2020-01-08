@@ -23,3 +23,4 @@ class RotationPowerupX:
     
     def onImpact(self, game):
         game.setProjectionMatrix(self.__matrix)
+        game.setIgnoreXYZ(1, 0, 0)

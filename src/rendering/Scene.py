@@ -13,7 +13,7 @@ class Scene:
         self.__dynamicObjects[name] = obj
     
     def removeDynamicObject(self, name):
-        res = self.__dynamicObjects.pop(name, None)
+        res = self.__dynamicObjects.pop(name)
 
         if not res:
             raise KeyError("Dynamic Object with key '" + name + "' doesn't exist!")

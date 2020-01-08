@@ -44,20 +44,34 @@ class World:
 
         return True
 
-    def getObjectsColliding(self, name: str):
+    def getObjectsColliding(self, name: str, ignoreX=False, ignoreY=False, ignoreZ=False):
         objects = set()
         obj = self.__scene.getDynamicObject(name)
 
         pos = obj.getPosition()
         fieldPos = pos.astype(int) // self.cubeWidth
 
-        for i in self.__field.getTilesNearby(*fieldPos):
+        for i in self.__field.getTilesNearby(*fieldPos, ignoreX=ignoreX, ignoreY=ignoreY, ignoreZ=ignoreZ):
             if not i or i == obj:
                 continue
-            if CollisionChecker.checkCollision(obj, i):
+            if CollisionChecker.checkCollision(obj, i, ignoreX, ignoreY, ignoreZ):
                 objects.add(i)
 
         return objects
+    
+    def checkIfObjectIsFloating(self, name, ignoreX=False, ignoreY=False, ignoreZ=False):
+        obj = self.__scene.getDynamicObject(name)
+
+        pos = obj.getPosition()
+        fieldPos = pos.astype(int) // self.cubeWidth
+
+        for i in self.__field.getTilesUnder(*fieldPos, ignoreX=ignoreX, ignoreY=ignoreY, ignoreZ=ignoreZ):
+            if not i:
+                continue
+            if CollisionChecker.checkTouch(obj, i, ignoreX, ignoreY, ignoreZ):
+                return False
+        
+        return True
     
     def getScene(self) -> Scene:
         return self.__scene

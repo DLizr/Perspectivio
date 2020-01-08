@@ -26,6 +26,9 @@ class Game(Process):
         self.__world = World(5, 5, 5)
         self.__eventHandler = EventHandler()
         self.__eventHandler.setKeyboardHandler(GameKeyboardHandler(self))
+        self.__ignoreX = False
+        self.__ignoreY = False
+        self.__ignoreZ = False
     
     def placeObject(self, x: int, y: int, z: int, name: str):
         if name == "Player":
@@ -57,8 +60,9 @@ class Game(Process):
     
     def move(self, name: str, dX: float, dY: float, dZ: float):
         self.__world.moveDynamicObject(name, dX, dY, dZ)
-        objectsCollided = self.__world.getObjectsColliding(name)
-        if self.__checkCollidedObjects(objectsCollided):
+        objectsCollided = self.__world.getObjectsColliding(name, ignoreX=self.__ignoreX, ignoreY=self.__ignoreY, ignoreZ=self.__ignoreZ)
+        isFloating = self.__world.checkIfObjectIsFloating(name, ignoreX=self.__ignoreX, ignoreY=self.__ignoreY, ignoreZ=self.__ignoreZ)
+        if self.__checkCollidedObjects(objectsCollided) or isFloating:
             self.__world.moveDynamicObject(name, -dX, -dY, -dZ)
 
     def __checkCollidedObjects(self, objects):
@@ -69,7 +73,11 @@ class Game(Process):
                 return True
             elif type(i) == Powerup:
                 i.onImpact(self)
-                return False
     
     def setProjectionMatrix(self, matrix):
         self.__viewpoint.setMatrix(matrix)
+    
+    def setIgnoreXYZ(self, ignoreX, ignoreY, ignoreZ):
+        self.__ignoreX = bool(ignoreX)
+        self.__ignoreY = bool(ignoreY)
+        self.__ignoreZ = bool(ignoreZ)
