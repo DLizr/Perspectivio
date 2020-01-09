@@ -96,6 +96,10 @@ class World:
         if y <= 1 * self.cubeWidth:
             return True
         return False
+
+    def updateDynamicObjects(self):
+        for i in self.__scene.getDynamicObjects():
+            i.update()
     
     def getScene(self) -> Scene:
         return self.__scene

@@ -24,6 +24,9 @@ class Scene:
         except KeyError:
             raise KeyError("Unable to find Dynamic Object with name '" + name + "'!")
         return obj
+
+    def getDynamicObjects(self):
+        return self.__dynamicObjects.values()
     
     def render(self):
         for obj in self.__objects:

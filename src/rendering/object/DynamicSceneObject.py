@@ -8,27 +8,27 @@ class DynamicSceneObject(StaticSceneObject):
     def __init__(self, vertices: list, indices: list, colors: list=None):
 
         super().__init__(vertices, indices, colors)
-        self.__vertices = np.array(vertices, dtype="float32")
+        self._vertices = np.array(vertices, dtype="float32")
         self._centerPosition: np.ndarray = None
     
-    def __updateVertices(self):
-        self.vertexBuffer.updateData(self.__vertices)
+    def _updateVertices(self):
+        self.vertexBuffer.updateData(np.array(self._vertices, dtype="float32"))
         self.__moveWireframe()
         
     def moveX(self, x: float):
-        self.__vertices[0:-1:3] += x
+        self._vertices[0:-1:3] += x
         self._centerPosition[0] += x
-        self.__updateVertices()
+        self._updateVertices()
     
     def moveY(self, y: float):
-        self.__vertices[1:-1:3] += y
+        self._vertices[1:-1:3] += y
         self._centerPosition[1] += y
-        self.__updateVertices()
+        self._updateVertices()
     
     def moveZ(self, z: float):
-        self.__vertices[2:self.__vertices.size:3] += z
+        self._vertices[2:self._vertices.size:3] += z
         self._centerPosition[2] += z
-        self.__updateVertices()
+        self._updateVertices()
     
     def getPosition(self) -> np.ndarray:
         """Returns a position.
@@ -41,7 +41,10 @@ class DynamicSceneObject(StaticSceneObject):
     
     def __moveWireframe(self):
         for i in self._childObjects:
-            i.updateVertices(self.__vertices)
+            i.updateVertices(self._vertices)
+
+    def update(self):
+        return
     
     def __repr__(self):
         return "DynamicObject({})".format(type(self))

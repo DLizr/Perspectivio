@@ -63,6 +63,7 @@ class Game(Process):
     def update(self):
         self.__eventHandler.handleEvents()
         self.__moveObjects()
+        self.__world.updateDynamicObjects()
         self.__viewpoint.useShader()
         self.__world.render()
         self.__viewpoint.unuseShader()
