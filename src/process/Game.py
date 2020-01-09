@@ -77,12 +77,12 @@ class Game(Process):
             if type(i) == StaticPyramid:
                 self.died()
             elif type(i) == StaticCube:
-                return True
+                return True and not self.__ignoreY
             elif type(i) == Powerup:
                 i.onImpact(self)
             elif type(i) == FinishCube:
                 print("You Win!")  # Call to Application.
-                return True
+                return True and not self.__ignoreY
     
     def died(self):
         if self.__lives == 0:
