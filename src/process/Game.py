@@ -30,6 +30,7 @@ class Game(Process):
         self.__ignoreX = False
         self.__ignoreY = False
         self.__ignoreZ = False
+        self.__movement = [0, 0, 0]
 
         self.__spawnpoint: list = None
         self.__lives = 3
@@ -61,36 +62,58 @@ class Game(Process):
 
     def update(self):
         self.__eventHandler.handleEvents()
+        self.__moveObjects()
         self.__viewpoint.useShader()
         self.__world.render()
         self.__viewpoint.unuseShader()
+
+    def move(self, dX: float, dY: float, dZ: float):
+        self.__movement = [dX, dY, dZ]
+
+    def __moveObjects(self):
+        self.__movePlayer()
+        self.__gravity("Player")
     
-    def move(self, name: str, dX: float, dY: float, dZ: float):
-        self.__world.moveDynamicObject(name, dX, dY, dZ)
-        objectsCollided = self.__world.getObjectsColliding(name, ignoreX=self.__ignoreX, ignoreY=self.__ignoreY, ignoreZ=self.__ignoreZ)
-        isFloating = self.__world.checkIfObjectIsFloating(name, ignoreX=self.__ignoreX, ignoreY=self.__ignoreY, ignoreZ=self.__ignoreZ)
-        if self.__checkCollidedObjects(objectsCollided) or isFloating:
-            self.__world.moveDynamicObject(name, -dX, -dY, -dZ)
+    def __movePlayer(self):
+        if not any(self.__movement):
+            return
+        dX, dY, dZ = self.__movement
+        self.__world.moveDynamicObject("Player", dX, dY, dZ)
+        objectsCollided = self.__world.getObjectsColliding("Player", ignoreX=self.__ignoreX, ignoreY=self.__ignoreY, ignoreZ=self.__ignoreZ)
+        if self.__checkCollidedObjects(objectsCollided):
+            self.__world.moveDynamicObject("Player", -dX, -dY, -dZ)
 
     def __checkCollidedObjects(self, objects):
+        cantMove = False
         for i in objects:
             if type(i) == StaticPyramid:
-                self.died()
+                self.__died()
             elif type(i) == StaticCube:
-                return True and not self.__ignoreY
+                cantMove = True and not self.__ignoreY
             elif type(i) == Powerup:
                 i.onImpact(self)
             elif type(i) == FinishCube:
                 print("You Win!")  # Call to Application.
-                return True and not self.__ignoreY
+                cantMove = True and not self.__ignoreY
+
+        return cantMove
     
-    def died(self):
+    def __died(self):
         if self.__lives == 0:
             print("You already lost.")  # Call to Application.
             return
         else:
             self.__world.teleportDynamicObject("Player", *self.__spawnpoint)
             self.__lives -= 1
+
+    def __gravity(self, name: str):
+        isFloating = self.__world.checkIfObjectIsFloating("Player", ignoreX=self.__ignoreX, ignoreY=self.__ignoreY, ignoreZ=self.__ignoreZ)
+        if not isFloating:
+            return
+        if self.__world.isOutOfTheWorld(name):
+            self.__died()
+        else:
+            self.__world.moveDynamicObject(name, 0, -0.1, 0)
     
     def setProjectionMatrix(self, matrix):
         self.__viewpoint.setMatrix(matrix)

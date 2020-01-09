@@ -89,6 +89,13 @@ class World:
                 return False
         
         return True
+
+    def isOutOfTheWorld(self, name: str):
+        obj = self.__scene.getDynamicObject(name)
+        y = obj.getPosition()[1]
+        if y <= 1 * self.cubeWidth:
+            return True
+        return False
     
     def getScene(self) -> Scene:
         return self.__scene

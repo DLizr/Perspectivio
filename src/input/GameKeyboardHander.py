@@ -20,5 +20,4 @@ class GameKeyboardHandler(IKeyboardHandler):
                 dZ -= 0.25
             elif key == pg.K_DOWN:
                 dZ += 0.25
-        if any({dX, dY, dZ}):
-            self.__game.move("Player", dX, dY, dZ)
+        self.__game.move(dX, dY, dZ)
