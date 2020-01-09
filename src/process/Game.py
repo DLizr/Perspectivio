@@ -6,6 +6,7 @@ from src.rendering.object.StaticCube import StaticCube
 from src.rendering.object.DynamicCube import DynamicCube
 from src.rendering.object.StaticPyramid import StaticPyramid
 from src.rendering.object.Powerup import Powerup
+from src.rendering.object.FinishCube import FinishCube
 
 from src.action.powerup.RotationPowerupUp import RotationPowerupUp
 from src.action.powerup.RotationPowerupX import RotationPowerupX
@@ -29,10 +30,14 @@ class Game(Process):
         self.__ignoreX = False
         self.__ignoreY = False
         self.__ignoreZ = False
+
+        self.__spawnpoint: list = None
+        self.__lives = 3
     
     def placeObject(self, x: int, y: int, z: int, name: str):
         if name == "Player":
             self.__world.addDynamicObject(x, y, z, DynamicCube([x, y, z], 2, [0, 0, 1] * 8), name)
+            self.__spawnpoint = [x, y, z]
         elif name == "Cube":
             self.__world.addObject(x, y, z, StaticCube([x, y, z], 2))
         elif name == "Spike":
@@ -49,6 +54,8 @@ class Game(Process):
             powerup = Powerup([x, y, z], 2)
             powerup.setAction(RotationPowerupZ(powerup))
             self.__world.addDynamicObject(x, y, z, powerup, name)
+        elif name == "Finish":
+            self.__world.addObject(x, y, z, FinishCube([x, y, z], 2))
         else:
             return  # Exception?
 
@@ -68,11 +75,22 @@ class Game(Process):
     def __checkCollidedObjects(self, objects):
         for i in objects:
             if type(i) == StaticPyramid:
-                return True
+                self.died()
             elif type(i) == StaticCube:
                 return True
             elif type(i) == Powerup:
                 i.onImpact(self)
+            elif type(i) == FinishCube:
+                print("You Win!")  # Call to Application.
+                return True
+    
+    def died(self):
+        if self.__lives == 0:
+            print("You already lost.")  # Call to Application.
+            return
+        else:
+            self.__world.teleportDynamicObject("Player", *self.__spawnpoint)
+            self.__lives -= 1
     
     def setProjectionMatrix(self, matrix):
         self.__viewpoint.setMatrix(matrix)

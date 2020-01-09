@@ -14,11 +14,11 @@ class World:
         self.__scene = Scene()
     
     def addObject(self, x: int, y: int, z: int, obj):
-        self.__field.placeObject(x // self.cubeWidth, y // self.cubeWidth, z // self.cubeWidth, obj)
+        self.__field.placeObject(obj, x // self.cubeWidth, y // self.cubeWidth, z // self.cubeWidth)
         self.__scene.putObject(obj)
     
     def addDynamicObject(self, x: int, y: int, z: int, obj, name: str):
-        self.__field.placeObject(x // self.cubeWidth, y // self.cubeWidth, z // self.cubeWidth, obj)
+        self.__field.placeObject(obj, x // self.cubeWidth, y // self.cubeWidth, z // self.cubeWidth)
         self.__scene.putDynamicObject(name, obj)
     
     def moveDynamicObject(self, name: str, dX: float, dY: float, dZ: float):
@@ -43,6 +43,23 @@ class World:
         obj.moveZ(dZ) if dZ else 0
 
         return True
+    
+    def teleportDynamicObject(self, name: str, x: float, y: float, z: float):
+        obj = self.__scene.getDynamicObject(name)
+
+        pos = obj.getPosition()
+        fieldPos = (pos // self.cubeWidth).astype(int)
+
+        self.__field.removeObject(*fieldPos)
+        self.__field.placeObject(obj, x, y, z)
+
+        dX = x - pos[0]
+        dY = y - pos[1]
+        dZ = z - pos[2]
+
+        obj.moveX(dX) if dX else 0
+        obj.moveY(dY) if dY else 0
+        obj.moveZ(dZ) if dZ else 0
 
     def getObjectsColliding(self, name: str, ignoreX=False, ignoreY=False, ignoreZ=False):
         objects = set()

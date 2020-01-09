@@ -9,7 +9,7 @@ class Field:
         self.__height = height
         self.__depth = depth
     
-    def placeObject(self, x: int, y: int, z: int, obj):
+    def placeObject(self, obj, x: int, y: int, z: int,):
         self.__field[x][y][z] = obj
     
     def removeObject(self, x: int, y: int, z: int):
