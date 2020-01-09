@@ -26,7 +26,7 @@ class DynamicSceneObject(StaticSceneObject):
         self._updateVertices()
     
     def moveZ(self, z: float):
-        self._vertices[2:self._vertices.size:3] += z
+        self._vertices[2:len(self._vertices):3] += z
         self._centerPosition[2] += z
         self._updateVertices()
     

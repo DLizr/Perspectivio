@@ -5,15 +5,16 @@ import numpy as np
 
 class Rotation:
 
-    def __init__(self, vertices: list, centerPosition: list, startingDegrees=None):
+    def __init__(self, width: float, vertices: list, centerPosition: list, startingDegrees=None):
         self.__vertices = vertices
         self.__centerPos = centerPosition
+        self.__width = width
         if startingDegrees:
             self.__degrees = startingDegrees
         else:
             self.__degrees = [0] * (len(vertices) // 3)
 
-    def update(self) -> list:
+    def update(self) -> np.ndarray:
         newVertices = []
 
         for i in range(0, len(self.__vertices), 3):
@@ -22,12 +23,12 @@ class Rotation:
             x, z = 0, 0
 
             if deg != -1:
-                x = 0.5 * math.cos(math.radians(deg))
-                z = 0.5 * math.sin(math.radians(deg))
+                x = self.__width * math.cos(math.radians(deg))
+                z = self.__width * math.sin(math.radians(deg))
                 self.__degrees[i // 3] += 3
 
             newVertices.append(self.__centerPos[0] - x)
             newVertices.append(v2)
             newVertices.append(self.__centerPos[2] - z)
 
-        return newVertices
+        return np.array(newVertices, dtype="float32")

@@ -8,7 +8,7 @@ from OpenGL.GL import GL_LINES
 
 class Wireframe:
     
-    def __init__(self, vertices: np.ndarray, indices: list, color: list):
+    def __init__(self, vertices: list, indices: list, color: list):
         self.__genVertexBuffer(vertices)
         indicesCount = len(indices) // 2
         self.__genIndexBuffer(indices)
