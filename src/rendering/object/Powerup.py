@@ -4,6 +4,7 @@ from src.rendering.object.DynamicSceneObject import DynamicSceneObject
 from src.rendering.object.Wireframe import Wireframe
 
 from src.animation.Rotation import Rotation
+from src.animation.Hovering import Hovering
 
 
 class Powerup(DynamicSceneObject):
@@ -45,6 +46,7 @@ class Powerup(DynamicSceneObject):
         self.__genWireframe(vertices)
 
         self.__rotationEngine = Rotation(self.__width / 4, vertices, self._centerPosition, self.__degrees)
+        self.__hoveringEngine = Hovering(vertices, 0.5)
     
     def __genVertices(self, pos) -> list:
         halfWidth = self.__width / 2
@@ -99,7 +101,8 @@ class Powerup(DynamicSceneObject):
         super().render(GL_TRIANGLES)
 
     def update(self):
-        self._vertices = self.__rotationEngine.update()
+        self.__rotationEngine.update(self._vertices)
+        self.__hoveringEngine.update(self._vertices)
         self._updateVertices()
     
     @staticmethod

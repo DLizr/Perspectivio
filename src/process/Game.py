@@ -44,7 +44,7 @@ class Game(Process):
         elif name == "Spike":
             self.__world.addObject(x, y, z, StaticPyramid([x, y, z], 2))
         elif name == "RPowerupUp":
-            powerup = Powerup([x, y, z], 2)
+            powerup = Powerup([x, y, z], 1)
             powerup.setAction(RotationPowerupUp(powerup))
             self.__world.addDynamicObject(x, y, z, powerup, name)
         elif name == "RPowerupX":
