@@ -56,8 +56,8 @@ class CollisionChecker:
         width2 = cube2.getWidth()
         widthSum = (width1 + width2) / 2
 
-        if abs(pos1[0] - pos2[0]) <=  widthSum or ignoreX:
+        if abs(pos1[0] - pos2[0]) <= widthSum or ignoreX:
             if abs(pos1[1] - pos2[1]) <= widthSum or ignoreY:
-                if abs(pos1[2] - pos2[2]) <=  widthSum or ignoreZ:
+                if abs(pos1[2] - pos2[2]) <= widthSum or ignoreZ:
                     return True
         return False

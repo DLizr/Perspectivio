@@ -44,14 +44,14 @@ class World:
 
         return True
     
-    def teleportDynamicObject(self, name: str, x: float, y: float, z: float):
+    def teleportDynamicObject(self, name: str, x: int, y: int, z: int):
         obj = self.__scene.getDynamicObject(name)
 
         pos = obj.getPosition()
         fieldPos = (pos // self.cubeWidth).astype(int)
 
         self.__field.removeObject(*fieldPos)
-        self.__field.placeObject(obj, x, y, z)
+        self.__field.placeObject(obj, x // self.cubeWidth, y // self.cubeWidth, z // self.cubeWidth)
 
         dX = x - pos[0]
         dY = y - pos[1]
@@ -83,12 +83,23 @@ class World:
         fieldPos = pos.astype(int) // self.cubeWidth
 
         for i in self.__field.getTilesUnder(*fieldPos, ignoreX=ignoreX, ignoreY=ignoreY, ignoreZ=ignoreZ):
-            if not i:
+            if not i or i == obj:
                 continue
             if CollisionChecker.checkTouch(obj, i, ignoreX, ignoreY, ignoreZ):
                 return False
         
         return True
+
+    def isOutOfTheWorld(self, name: str):
+        obj = self.__scene.getDynamicObject(name)
+        y = obj.getPosition()[1]
+        if y <= 1 * self.cubeWidth:
+            return True
+        return False
+
+    def updateDynamicObjects(self):
+        for i in self.__scene.getDynamicObjects():
+            i.update()
     
     def getScene(self) -> Scene:
         return self.__scene

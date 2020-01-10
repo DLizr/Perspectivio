@@ -1,10 +1,13 @@
 from OpenGL.GL import GL_TRIANGLES
 
-from src.rendering.object.StaticSceneObject import StaticSceneObject
+from src.rendering.object.DynamicSceneObject import DynamicSceneObject
 from src.rendering.object.Wireframe import Wireframe
 
+from src.animation.Rotation import Rotation
+from src.animation.Hovering import Hovering
 
-class Powerup(StaticSceneObject):
+
+class Powerup(DynamicSceneObject):
 
     def __init__(self, centerPosition: list, width, colors: list=None):
         self.__width = width
@@ -41,8 +44,11 @@ class Powerup(StaticSceneObject):
         super().__init__(vertices, indices, colors)
         self._centerPosition = centerPosition
         self.__genWireframe(vertices)
+
+        self.__rotationEngine = Rotation(self.__width / 4, vertices, self._centerPosition, self.__degrees)
+        self.__hoveringEngine = Hovering(vertices, 0.5)
     
-    def __genVertices(self, pos):
+    def __genVertices(self, pos) -> list:
         halfWidth = self.__width / 2
         quaterWidth = self.__width / 4
         vertices = [
@@ -60,10 +66,10 @@ class Powerup(StaticSceneObject):
 
             pos[0], pos[1] - halfWidth, pos[2]  # Bottom
         ]
-
+        self.__degrees = [-1, 0, 90, 180, 270, 0, 90, 180, 270, -1]
         return vertices
-    
-    def __genWireframe(self, vertices):
+
+    def __genWireframe(self, vertices: list):
         indices = [
             0, 1, 0, 2, 0, 3, 0, 4,
             1, 2, 2, 3, 3, 4, 1, 4,
@@ -93,8 +99,12 @@ class Powerup(StaticSceneObject):
     # Override
     def render(self):
         super().render(GL_TRIANGLES)
+
+    def update(self):
+        self.__rotationEngine.update(self._vertices)
+        self.__hoveringEngine.update(self._vertices)
+        self._updateVertices()
     
     @staticmethod
     def getShape():
         return "Rectangle"
-        
