@@ -19,13 +19,16 @@ class Rotation:
 
         for i in range(0, len(self.__vertices), 3):
             deg = self.__degrees[i // 3]
-            v1, v2, v3 = self.__vertices[i:i+3]
+            v2 = self.__vertices[i + 1]
             x, z = 0, 0
 
             if deg != -1:
                 x = self.__width * math.cos(math.radians(deg))
                 z = self.__width * math.sin(math.radians(deg))
                 self.__degrees[i // 3] += 3
+            
+            if deg == 360:
+                self.__degrees[i // 3] = 0
 
             newVertices.append(self.__centerPos[0] - x)
             newVertices.append(v2)
