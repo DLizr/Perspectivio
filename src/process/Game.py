@@ -72,8 +72,8 @@ class Game(Process):
         self.__movement = [dX, dY, dZ]
 
     def __moveObjects(self):
-        self.__movePlayer()
         self.__gravity("Player")
+        self.__movePlayer()
     
     def __movePlayer(self):
         if not any(self.__movement):
@@ -110,11 +110,12 @@ class Game(Process):
     def __gravity(self, name: str):
         isFloating = self.__world.checkIfObjectIsFloating("Player", ignoreX=self.__ignoreX, ignoreY=self.__ignoreY, ignoreZ=self.__ignoreZ)
         if not isFloating:
+            self.__movement[1] = 0
             return
         if self.__world.isOutOfTheWorld(name):
             self.__died()
         else:
-            self.__world.moveDynamicObject(name, 0, -0.1, 0)
+            self.__movement[1] = -0.25
     
     def setProjectionMatrix(self, matrix):
         self.__viewpoint.setMatrix(matrix)
