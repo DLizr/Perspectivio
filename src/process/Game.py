@@ -11,6 +11,8 @@ from src.rendering.object.FinishCube import FinishCube
 from src.action.powerup.RotationPowerupUp import RotationPowerupUp
 from src.action.powerup.RotationPowerupX import RotationPowerupX
 from src.action.powerup.RotationPowerupZ import RotationPowerupZ
+from src.action.powerup.RotationPowerupX3D import RotationPowerupX3D
+from src.action.powerup.RotationPowerupZ3D import RotationPowerupZ3D
 
 from src.input.GameKeyboardHander import GameKeyboardHandler
 
@@ -48,12 +50,20 @@ class Game(Process):
             powerup.setAction(RotationPowerupUp(powerup))
             self.__world.addDynamicObject(x, y, z, powerup, name)
         elif name == "RPowerupX":
-            powerup = Powerup([x, y, z], 2)
+            powerup = Powerup([x, y, z], 1)
             powerup.setAction(RotationPowerupX(powerup))
             self.__world.addDynamicObject(x, y, z, powerup, name)
         elif name == "RPowerupZ":
-            powerup = Powerup([x, y, z], 2)
+            powerup = Powerup([x, y, z], 1)
             powerup.setAction(RotationPowerupZ(powerup))
+            self.__world.addDynamicObject(x, y, z, powerup, name)
+        elif name == "RPowerupX3D":
+            powerup = Powerup([x, y, z], 1)
+            powerup.setAction(RotationPowerupX3D(powerup))
+            self.__world.addDynamicObject(x, y, z, powerup, name)
+        elif name == "RPowerupZ3D":
+            powerup = Powerup([x, y, z], 1)
+            powerup.setAction(RotationPowerupZ3D(powerup))
             self.__world.addDynamicObject(x, y, z, powerup, name)
         elif name == "Finish":
             self.__world.addObject(x, y, z, FinishCube([x, y, z], 2))
