@@ -12,9 +12,9 @@ class RotationPowerupInvertedX3D:
         self.__matrix = np.matmul(self.__proj, self.__view)
     
     def __genViewMatrix(self):
-        x = self.__centerPosition[0]
+        x = self.__centerPosition[0] + 6
         y = self.__centerPosition[1] + 8
-        z = self.__centerPosition[2] - 6
+        z = self.__centerPosition[2]
         self.__view = np.transpose(pyrr.matrix44.create_look_at(np.array([x, y, z], dtype="float32"), 
                                                                 np.array(self.__centerPosition, dtype="float32"), 
                                                                 np.array([0, 1, 0], dtype="float32")))
