@@ -18,3 +18,7 @@ class MainMenu(Process):
 
     def update(self):
         self.__eventHandler.handleEvents()
+
+        surface = pg.surface.Surface(self.__size)
+        surface.fill((255, 255, 255))
+        SurfaceBlitter.blit(self.__size, surface)
