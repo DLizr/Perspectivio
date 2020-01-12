@@ -4,6 +4,7 @@ class Scene:
 
     def __init__(self):
         self.__objects = set()
+        self.__updatableObjects = set()
         self.__dynamicObjects = dict()
     
     def putObject(self, obj):
@@ -11,6 +12,9 @@ class Scene:
     
     def putDynamicObject(self, name, obj):
         self.__dynamicObjects[name] = obj
+    
+    def putUpdatableObject(self, obj):
+        self.__updatableObjects.add(obj)
     
     def removeDynamicObject(self, name):
         res = self.__dynamicObjects.pop(name)
@@ -28,8 +32,13 @@ class Scene:
     def getDynamicObjects(self):
         return self.__dynamicObjects.values()
     
+    def getUpdatableObjects(self):
+        return self.__updatableObjects.copy()
+    
     def render(self):
         for obj in self.__objects:
             obj.render()
         for obj in self.__dynamicObjects.values():
+            obj.render()
+        for obj in self.__updatableObjects:
             obj.render()

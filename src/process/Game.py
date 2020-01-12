@@ -50,31 +50,31 @@ class Game(Process):
         elif name == "RPowerupUp":
             powerup = Powerup([x, y, z], 1)
             powerup.setAction(RotationPowerupUp(powerup))
-            self.__world.addDynamicObject(x, y, z, powerup, name)
+            self.__world.addUpdatableObject(x, y, z, powerup)
         elif name == "RPowerupX":
             powerup = Powerup([x, y, z], 1)
             powerup.setAction(RotationPowerupX(powerup))
-            self.__world.addDynamicObject(x, y, z, powerup, name)
+            self.__world.addUpdatableObject(x, y, z, powerup)
         elif name == "RPowerupZ":
             powerup = Powerup([x, y, z], 1)
             powerup.setAction(RotationPowerupZ(powerup))
-            self.__world.addDynamicObject(x, y, z, powerup, name)
+            self.__world.addUpdatableObject(x, y, z, powerup)
         elif name == "RPowerupX3D":
             powerup = Powerup([x, y, z], 1)
             powerup.setAction(RotationPowerupX3D(powerup))
-            self.__world.addDynamicObject(x, y, z, powerup, name)
+            self.__world.addUpdatableObject(x, y, z, powerup)
         elif name == "RPowerupZ3D":
             powerup = Powerup([x, y, z], 1)
             powerup.setAction(RotationPowerupZ3D(powerup))
-            self.__world.addDynamicObject(x, y, z, powerup, name)
+            self.__world.addUpdatableObject(x, y, z, powerup)
         elif name == "RPowerup-X3D":
             powerup = Powerup([x, y, z], 1)
             powerup.setAction(RotationPowerupInvertedX3D(powerup))
-            self.__world.addDynamicObject(x, y, z, powerup, name)
+            self.__world.addUpdatableObject(x, y, z, powerup)
         elif name == "RPowerup-Z3D":
             powerup = Powerup([x, y, z], 1)
             powerup.setAction(RotationPowerupInvertedZ3D(powerup))
-            self.__world.addDynamicObject(x, y, z, powerup, name)
+            self.__world.addUpdatableObject(x, y, z, powerup)
         elif name == "Finish":
             self.__world.addObject(x, y, z, FinishCube([x, y, z], 2))
         else:
@@ -83,7 +83,7 @@ class Game(Process):
     def update(self):
         self.__eventHandler.handleEvents()
         self.__moveObjects()
-        self.__world.updateDynamicObjects()
+        self.__world.updateObjects()
         self.__viewpoint.useShader()
         self.__world.render()
         self.__viewpoint.unuseShader()

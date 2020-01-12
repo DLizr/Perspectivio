@@ -21,6 +21,10 @@ class World:
         self.__field.placeObject(obj, x // self.cubeWidth, y // self.cubeWidth, z // self.cubeWidth)
         self.__scene.putDynamicObject(name, obj)
     
+    def addUpdatableObject(self, x: int, y: int, z: int, obj):
+        self.__field.placeObject(obj, x // self.cubeWidth, y // self.cubeWidth, z // self.cubeWidth)
+        self.__scene.putUpdatableObject(obj)
+    
     def moveDynamicObject(self, name: str, dX: float, dY: float, dZ: float):
         """Collision isn't checked!"""
         obj = self.__scene.getDynamicObject(name)
@@ -97,8 +101,8 @@ class World:
             return True
         return False
 
-    def updateDynamicObjects(self):
-        for i in self.__scene.getDynamicObjects():
+    def updateObjects(self):
+        for i in self.__scene.getUpdatableObjects():
             i.update()
     
     def getScene(self) -> Scene:
