@@ -128,8 +128,8 @@ class Game(Process):
             self.__lives -= 1
 
     def __gravity(self, name: str):
-        isFloating = self.__world.checkIfObjectIsFloating("Player", ignoreX=self.__ignoreX, ignoreY=self.__ignoreY, ignoreZ=self.__ignoreZ)
-        if not isFloating:
+        objects = self.__world.getObjectsUnder("Player", ignoreX=self.__ignoreX, ignoreY=self.__ignoreY, ignoreZ=self.__ignoreZ)
+        if self.__checkCollidedObjects(objects):
             self.__movement[1] = 0
             return
         if self.__world.isOutOfTheWorld(name):

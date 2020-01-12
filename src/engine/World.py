@@ -80,7 +80,8 @@ class World:
 
         return objects
     
-    def checkIfObjectIsFloating(self, name, ignoreX=False, ignoreY=False, ignoreZ=False):
+    def getObjectsUnder(self, name, ignoreX=False, ignoreY=False, ignoreZ=False) -> set:
+        objects = set()
         obj = self.__scene.getDynamicObject(name)
 
         pos = obj.getPosition()
@@ -90,9 +91,9 @@ class World:
             if not i or i == obj:
                 continue
             if CollisionChecker.checkTouch(obj, i, ignoreX, ignoreY, ignoreZ):
-                return False
+                objects.add(i)
         
-        return True
+        return objects
 
     def isOutOfTheWorld(self, name: str):
         obj = self.__scene.getDynamicObject(name)
