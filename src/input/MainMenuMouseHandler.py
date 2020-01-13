@@ -8,8 +8,8 @@ class MainMenuMouseHandler(IMouseHandler):
         self.__menu = menu
         self.__buttons = set()
     
-    def addButton(self, x1, y1, x2, y2, name, clickAction, hoveringAction):
-        self.__buttons.add(Button(x1, y1, x2, y2, name, clickAction, hoveringAction))
+    def addButton(self, x1, y1, x2, y2, name, idleAction, clickAction, hoveringAction):
+        self.__buttons.add(Button(x1, y1, x2, y2, name, idleAction, clickAction, hoveringAction))
     
     def clearButtons(self):
         self.__buttons.clear()
@@ -17,11 +17,12 @@ class MainMenuMouseHandler(IMouseHandler):
     def handleClick(self, pos):
         for i in self.__buttons:
             if i.collidesPoint(*pos):
-                i.onClick(self.__menu)
+                i.onClick()
                 return
     
     def handleHovering(self, pos):
         for i in self.__buttons:
             if i.collidesPoint(*pos):
-                i.onHover(self.__menu)
-                return
+                i.onHover()
+            else:
+                i.idle()

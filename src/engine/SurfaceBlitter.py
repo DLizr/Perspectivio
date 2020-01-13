@@ -11,10 +11,10 @@ class SurfaceBlitter:
 
     @staticmethod
     def blit(size, surface: pg.surface.Surface):
-        x1 = size[0]
-        y1 = size[1]
-        x2 = 0
-        y2 = 0
+        x1 = 0
+        y1 = 0
+        x2 = size[0]
+        y2 = size[1]
 
         image = pg.image.tostring(surface, "RGBA", 1)
         glEnable(GL_TEXTURE_2D)
@@ -37,16 +37,16 @@ class SurfaceBlitter:
         glBegin(GL_QUADS)
 
         glTexCoord2d(0, 0)
-        glVertex3f(x1, y1, -1)
+        glVertex3f(x1, y2, -1)
 
         glTexCoord2d(1, 0)
-        glVertex3f(x2, y1, -1)
-
-        glTexCoord2d(1, 1)
         glVertex3f(x2, y2, -1)
 
+        glTexCoord2d(1, 1)
+        glVertex3f(x2, y1, -1)
+
         glTexCoord2d(0, 1)
-        glVertex3f(x1, y2, -1)
+        glVertex3f(x1, y1, -1)
 
         glEnd()
     
