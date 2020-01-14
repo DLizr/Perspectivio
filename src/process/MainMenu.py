@@ -1,5 +1,4 @@
 import pygame as pg
-import os
 
 from src.process.Process import Process
 
@@ -21,20 +20,30 @@ class MainMenu(Process):
         self.__size = (width, height)
         self.__eventHandler = EventHandler()
         self.__eventHandler.setMouseHandler(MainMenuMouseHandler(self))
+        self.__background = self.__createBackgoundSurface()
         self.addButton(289, 250, "PlayButton", self.__openLevelSelectionScreen)
+        self.addButton(289, 380, "ExitButton", self.exit)
+    
+    def __createBackgoundSurface(self):
+        surface = pg.surface.Surface(self.__size)
+        img = pg.image.load("src/assets/Background.png").convert()
+
+        surface.blit(img, (0, 0))
+        
+        return surface
 
     def update(self):
         self.__eventHandler.handleEvents()
 
-        surface = pg.surface.Surface(self.__size)
+        surface = self.__background.copy()
         for i in self.__buttons:
             i.render(surface)
         SurfaceBlitter.blit(self.__size, surface)
     
     def addButton(self, x: int, y: int, name: str, action):
-        imgIdle = pg.image.load(os.path.join("src", "assets", name + ".png")).convert()
-        imgHover = pg.image.load(os.path.join("src", "assets", name + "Hover.png")).convert()
-        imgPress = pg.image.load(os.path.join("src", "assets", name + "Press.png")).convert()
+        imgIdle = pg.image.load("src/assets/" + name + ".png").convert()
+        imgHover = pg.image.load("src/assets/" + name + "Hover.png").convert()
+        imgPress = pg.image.load("src/assets/" + name + "Press.png").convert()
 
         width, height = imgIdle.get_size()
 
@@ -56,3 +65,7 @@ class MainMenu(Process):
         game = GameFactory.openLevel(level, *self.__size)
 
         raise ProcessChangedException(game)
+
+    @staticmethod
+    def exit():
+        raise InterruptedError
