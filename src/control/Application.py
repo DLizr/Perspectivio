@@ -5,6 +5,8 @@ from src.process.MainMenu import MainMenu
 
 from src.engine.LevelReader import LevelReader
 
+from src.control.ProcessChangedException import ProcessChangedException
+
 
 class Application:
     
@@ -20,9 +22,12 @@ class Application:
     
     def mainLoop(self):
         while True:
-            self.__process.update()
-            self.__window.update()
+            try:
+                self.__process.update()
+            except ProcessChangedException as e:
+                self.setProcess(e.getProcess())
 
+            self.__window.update()
     
     def terminate(self):
         del self.__window
