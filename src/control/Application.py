@@ -26,12 +26,13 @@ class Application:
                 self.__process.update()
             except ProcessChangedException as e:
                 self.setProcess(e.getProcess())
+                self.__window.enableDepthTesting()
 
             self.__window.update()
     
     def terminate(self):
-        del self.__window
         del self.__process
+        del self.__window
     
     def setProcess(self, process):
         del self.__process
