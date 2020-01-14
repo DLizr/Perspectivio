@@ -1,11 +1,7 @@
 from src.control.Window import Window
-
-from src.process.Game import Game
-from src.process.MainMenu import MainMenu
-
-from src.engine.LevelReader import LevelReader
-
 from src.control.ProcessChangedException import ProcessChangedException
+
+from src.process.MainMenu import MainMenu
 
 
 class Application:
@@ -13,7 +9,6 @@ class Application:
     def __init__(self, width: int, height: int):
         self.__window = Window((width, height))
         self.__process = MainMenu(width, height)
-        # LevelReader().loadLevel(self.__process, "data/test.pctv")  # FIXME: Demo mode.
 
         try:
             self.mainLoop()
