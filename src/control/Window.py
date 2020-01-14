@@ -8,10 +8,13 @@ class Window:
     def __init__(self, size):
         pg.init()
         pg.display.set_mode(size, DOUBLEBUF|OPENGL)
-        glEnable(GL_DEPTH_TEST)
-        glDepthFunc(GL_LESS)
         glClearColor(0.8, 0.8, 1, 1)
         self.clock = pg.time.Clock()
+
+    @staticmethod
+    def enableDepthTesting():
+        glEnable(GL_DEPTH_TEST)
+        glDepthFunc(GL_LEQUAL)
     
     def update(self):
         pg.display.flip()
