@@ -21,8 +21,8 @@ class MainMenu(Process):
         self.__eventHandler = EventHandler()
         self.__eventHandler.setMouseHandler(ButtonMouseHandler(self))
         self.__background = self.__createBackgoundSurface()
-        self.addButton(289, 250, "PlayButton", self.__openLevelSelectionScreen)
-        self.addButton(289, 380, "ExitButton", self.exit)
+
+        self.__openMainScreen()
     
     def __createBackgoundSurface(self):
         surface = pg.surface.Surface(self.__size)
@@ -60,6 +60,15 @@ class MainMenu(Process):
         self.addButton(350, 50, "3", lambda: self.__startLevel("3"))
         self.addButton(500, 50, "4", lambda: self.__startLevel("4"))
         self.addButton(650, 50, "5", lambda: self.__startLevel("5"))
+
+        self.addButton(289, 420, "BackButton", self.__openMainScreen)
+    
+    def __openMainScreen(self):
+        self.__buttons.clear()
+        self.__eventHandler.getMouseHandler().clearButtons()
+
+        self.addButton(289, 250, "PlayButton", self.__openLevelSelectionScreen)
+        self.addButton(289, 380, "ExitButton", self.exit)
 
     def __startLevel(self, level: str):
         game = GameFactory.openLevel(self, level, *self.__size)
