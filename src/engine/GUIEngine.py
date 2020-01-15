@@ -16,7 +16,15 @@ class GUIEngine:
     def render(self):
         surface = pg.surface.Surface((self.__width, self.__height), pg.SRCALPHA)
         surface.fill((255, 255, 255, 0))
-        pg.draw.circle(surface, (255, 0, 0), (self.__width - 50, 50), 20)
-        pg.draw.circle(surface, (0, 0, 0), (self.__width - 50, 50), 20, 1)
+        if self.__lives > 0:
+            self.__drawLife(surface, 30, 40)
+            if self.__lives > 1:
+                self.__drawLife(surface, 80, 40)
+                if self.__lives > 2:
+                    self.__drawLife(surface, 130, 40)
 
         SurfaceBlitter.blit((self.__width, self.__height), surface)
+    
+    def __drawLife(self, surface, x: int, y: int):
+        pg.draw.polygon(surface, (255, 0, 0), [(x - 20, y), (x, y - 20), (x + 20, y), (x, y + 20)])
+        pg.draw.polygon(surface, (0, 0, 0), [(x - 20, y), (x, y - 20), (x + 20, y), (x, y + 20)], 1)

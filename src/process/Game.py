@@ -129,6 +129,7 @@ class Game(Process):
         else:
             self.__world.teleportDynamicObject("Player", *self.__spawnpoint)
             self.__lives -= 1
+            self.__gui.died()
 
     def __gravity(self, name: str):
         objects = self.__world.getObjectsUnder("Player", ignoreX=self.__ignoreX, ignoreY=self.__ignoreY, ignoreZ=self.__ignoreZ)
