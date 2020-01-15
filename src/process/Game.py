@@ -1,4 +1,5 @@
 from src.engine.World import World
+from src.engine.GUIEngine import GUIEngine
 
 from src.view.Viewpoint import Viewpoint
 
@@ -31,6 +32,7 @@ class Game(Process):
         self.__world = World(5, 5, 5)
         self.__eventHandler = EventHandler()
         self.__eventHandler.setKeyboardHandler(GameKeyboardHandler(self))
+        self.__gui = GUIEngine(width, height, 3)
         self.__ignoreX = False
         self.__ignoreY = False
         self.__ignoreZ = False
@@ -87,6 +89,7 @@ class Game(Process):
         self.__viewpoint.useShader()
         self.__world.render()
         self.__viewpoint.unuseShader()
+        self.__gui.render()
 
     def move(self, dX: float, dY: float, dZ: float):
         self.__movement = [dX, dY, dZ]
