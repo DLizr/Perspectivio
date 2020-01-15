@@ -21,13 +21,15 @@ from src.input.GameKeyboardHander import GameKeyboardHandler
 from src.input.ButtonMouseHandler import ButtonMouseHandler
 
 from src.control.EventHandler import EventHandler
+from src.control.ProcessChangedException import ProcessChangedException
 
 from src.process.Process import Process
 
 
 class Game(Process):
 
-    def __init__(self, width: int, height: int):
+    def __init__(self, menu, width: int, height: int):
+        self.__menu = menu
         self.__viewpoint = Viewpoint(width, height)
         self.__world = World(5, 5, 5)
         self.__eventHandler = EventHandler()
@@ -38,6 +40,7 @@ class Game(Process):
         self.__ignoreY = False
         self.__ignoreZ = False
         self.__movement = [0, 0, 0]
+        self.__size = (width, height)
 
         self.__spawnpoint: list = None
         self.__lives = 3
@@ -160,6 +163,9 @@ class Game(Process):
     
     def isPaused(self):
         return self.__paused
+    
+    def quit(self):
+        raise ProcessChangedException(self.__menu)
     
     def getEventHandler(self):
         return self.__eventHandler

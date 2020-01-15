@@ -62,7 +62,7 @@ class MainMenu(Process):
         self.addButton(650, 50, "5", lambda: self.__startLevel("5"))
 
     def __startLevel(self, level: str):
-        game = GameFactory.openLevel(level, *self.__size)
+        game = GameFactory.openLevel(self, level, *self.__size)
 
         raise ProcessChangedException(game)
 

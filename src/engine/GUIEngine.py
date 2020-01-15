@@ -14,7 +14,15 @@ class GUIEngine:
         self.__height = height
         self.__game = game
         self.__buttons = set()
+        self.__pausedButtons = set()
+        self.__pauseButton = self.__createPauseButton()
         self.__addButton(self.__width - 60, 10, "Pause", self.__pauseGame)
+        self.__addPausedButton(20, self.__height - 100, "ExitButton", self.__exitTheGame)
+    
+    def __createPauseButton(self):
+        button = self.__createButton(self.__width - 60, 10, "Pause", self.__pauseGame)
+        self.__buttons.add(button)
+        return button
 
     def died(self):
         self.__lives -= 1
@@ -28,9 +36,15 @@ class GUIEngine:
                 self.__drawLife(surface, 80, 40)
                 if self.__lives > 2:
                     self.__drawLife(surface, 130, 40)
-        
+
         for i in self.__buttons:
             i.render(surface)
+        
+        if self.__game.isPaused():
+            for i in self.__pausedButtons:
+                i.render(surface)
+            self.__pauseButton.click()
+            self.__pauseButton.render(surface)
         
         SurfaceBlitter.blit((self.__width, self.__height), surface)
     
@@ -38,7 +52,7 @@ class GUIEngine:
         pg.draw.polygon(surface, (255, 0, 0), [(x - 20, y), (x, y - 20), (x + 20, y), (x, y + 20)])
         pg.draw.polygon(surface, (0, 0, 0), [(x - 20, y), (x, y - 20), (x + 20, y), (x, y + 20)], 1)
     
-    def __addButton(self, x: int, y: int, name: str, action):
+    def __createButton(self, x: int, y: int, name: str, action):
         eventHandler = self.__game.getEventHandler()
         imgIdle = pg.image.load("src/assets/" + name + ".png").convert()
         imgHover = pg.image.load("src/assets/" + name + "Hover.png").convert()
@@ -48,8 +62,15 @@ class GUIEngine:
 
         button = ButtonRenderer(name, (x, y), imgIdle, imgHover, imgPress)
         eventHandler.getMouseHandler().addButton(x, y, x + width, y + height, name, button.idle, action, button.hover)
-        self.__buttons.add(button)
+
+        return button
     
+    def __addButton(self, x: int, y: int, name: str, action):
+        self.__buttons.add(self.__createButton(x, y, name, action))
+    
+    def __addPausedButton(self, x: int, y: int, name: str, action):
+        self.__pausedButtons.add(self.__createButton(x, y, name, action))
+        
     def __pauseGame(self):
         if self.__game.isPaused():
             self.__opacity = 0
@@ -57,3 +78,7 @@ class GUIEngine:
         else:
             self.__opacity = 150
             self.__game.pause()
+    
+    def __exitTheGame(self):
+        if self.__game.isPaused():
+            self.__game.quit()
