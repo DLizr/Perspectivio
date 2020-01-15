@@ -2,6 +2,8 @@ import pygame as pg
 
 from src.engine.SurfaceBlitter import SurfaceBlitter
 
+from src.rendering.object.ButtonRenderer import ButtonRenderer
+
 
 class GUIEngine:
 
@@ -9,6 +11,11 @@ class GUIEngine:
         self.__lives = lives
         self.__width = width
         self.__height = height
+
+        self.__buttons = set()
+    
+    def addButtons(self, eventHandler):
+        self.__addButton(eventHandler, self.__width - 60, 10, "Pause", lambda: 0)
 
     def died(self):
         self.__lives -= 1
@@ -22,9 +29,24 @@ class GUIEngine:
                 self.__drawLife(surface, 80, 40)
                 if self.__lives > 2:
                     self.__drawLife(surface, 130, 40)
+        
+        for i in self.__buttons:
+            i.render(surface)
+        
 
         SurfaceBlitter.blit((self.__width, self.__height), surface)
     
     def __drawLife(self, surface, x: int, y: int):
         pg.draw.polygon(surface, (255, 0, 0), [(x - 20, y), (x, y - 20), (x + 20, y), (x, y + 20)])
         pg.draw.polygon(surface, (0, 0, 0), [(x - 20, y), (x, y - 20), (x + 20, y), (x, y + 20)], 1)
+    
+    def __addButton(self, eventHandler, x: int, y: int, name: str, action):
+        imgIdle = pg.image.load("src/assets/" + name + ".png").convert()
+        imgHover = pg.image.load("src/assets/" + name + "Hover.png").convert()
+        imgPress = pg.image.load("src/assets/" + name + "Press.png").convert()
+
+        width, height = imgIdle.get_size()
+
+        button = ButtonRenderer(name, (x, y), imgIdle, imgHover, imgPress)
+        eventHandler.getMouseHandler().addButton(x, y, x + width, y + height, name, button.idle, action, button.hover)
+        self.__buttons.add(button)

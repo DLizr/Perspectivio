@@ -18,11 +18,11 @@ from src.action.powerup.RotationPowerupInvertedX3D import RotationPowerupInverte
 from src.action.powerup.RotationPowerupInvertedZ3D import RotationPowerupInvertedZ3D
 
 from src.input.GameKeyboardHander import GameKeyboardHandler
+from src.input.ButtonMouseHandler import ButtonMouseHandler
 
 from src.control.EventHandler import EventHandler
 
 from src.process.Process import Process
-# TODO: import GUI engine.
 
 
 class Game(Process):
@@ -32,7 +32,9 @@ class Game(Process):
         self.__world = World(5, 5, 5)
         self.__eventHandler = EventHandler()
         self.__eventHandler.setKeyboardHandler(GameKeyboardHandler(self))
+        self.__eventHandler.setMouseHandler(ButtonMouseHandler(self))
         self.__gui = GUIEngine(width, height, 3)
+        self.__gui.addButtons(self.__eventHandler)
         self.__ignoreX = False
         self.__ignoreY = False
         self.__ignoreZ = False
