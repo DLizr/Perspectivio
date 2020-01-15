@@ -2,7 +2,7 @@ from src.input.IMouseHandler import IMouseHandler
 from src.input.Button import Button
 
 
-class MainMenuMouseHandler(IMouseHandler):
+class ButtonMouseHandler(IMouseHandler):
     
     def __init__(self, menu):
         self.__menu = menu

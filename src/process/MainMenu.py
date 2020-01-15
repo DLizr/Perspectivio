@@ -5,7 +5,7 @@ from src.process.Process import Process
 from src.control.EventHandler import EventHandler
 from src.control.ProcessChangedException import ProcessChangedException
 
-from src.input.MainMenuMouseHandler import MainMenuMouseHandler
+from src.input.ButtonMouseHandler import ButtonMouseHandler
 
 from src.engine.SurfaceBlitter import SurfaceBlitter
 from src.engine.GameFactory import GameFactory
@@ -19,7 +19,7 @@ class MainMenu(Process):
         self.__buttons = set()
         self.__size = (width, height)
         self.__eventHandler = EventHandler()
-        self.__eventHandler.setMouseHandler(MainMenuMouseHandler(self))
+        self.__eventHandler.setMouseHandler(ButtonMouseHandler(self))
         self.__background = self.__createBackgoundSurface()
         self.addButton(289, 250, "PlayButton", self.__openLevelSelectionScreen)
         self.addButton(289, 380, "ExitButton", self.exit)
