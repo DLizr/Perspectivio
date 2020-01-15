@@ -33,8 +33,7 @@ class Game(Process):
         self.__eventHandler = EventHandler()
         self.__eventHandler.setKeyboardHandler(GameKeyboardHandler(self))
         self.__eventHandler.setMouseHandler(ButtonMouseHandler(self))
-        self.__gui = GUIEngine(width, height, 3)
-        self.__gui.addButtons(self.__eventHandler)
+        self.__gui = GUIEngine(self, width, height, 3)
         self.__ignoreX = False
         self.__ignoreY = False
         self.__ignoreZ = False
@@ -42,6 +41,7 @@ class Game(Process):
 
         self.__spawnpoint: list = None
         self.__lives = 3
+        self.__paused = False
     
     def placeObject(self, x: int, y: int, z: int, name: str):
         if name == "Player":
@@ -86,8 +86,9 @@ class Game(Process):
 
     def update(self):
         self.__eventHandler.handleEvents()
-        self.__moveObjects()
-        self.__world.updateObjects()
+        if not self.__paused:
+            self.__moveObjects()
+            self.__world.updateObjects()
         self.__viewpoint.useShader()
         self.__world.render()
         self.__viewpoint.unuseShader()
@@ -150,3 +151,15 @@ class Game(Process):
         self.__ignoreX = bool(ignoreX)
         self.__ignoreY = bool(ignoreY)
         self.__ignoreZ = bool(ignoreZ)
+    
+    def pause(self):
+        self.__paused = True
+    
+    def unpause(self):
+        self.__paused = False
+    
+    def isPaused(self):
+        return self.__paused
+    
+    def getEventHandler(self):
+        return self.__eventHandler
