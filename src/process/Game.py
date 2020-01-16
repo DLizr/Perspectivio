@@ -1,3 +1,6 @@
+import time
+
+
 from src.engine.World import World
 from src.engine.GUIEngine import GUIEngine
 
@@ -45,6 +48,8 @@ class Game(Process):
         self.__spawnpoint: list = None
         self.__lives = 3
         self.__paused = False
+
+        self.__startingTime = time.time()
     
     def placeObject(self, x: int, y: int, z: int, name: str):
         if name == "Player":
@@ -123,19 +128,27 @@ class Game(Process):
             elif type(i) == Powerup:
                 i.onImpact(self)
             elif type(i) == FinishCube:
-                print("You Win!")  # Call to Application.
+                self.__win()
                 cantMove = True and not self.__ignoreY
 
         return cantMove
     
     def __died(self):
         if self.__lives == 0:
-            print("You already lost.")  # Call to Application.
+            self.__lost()
             return
         else:
             self.__world.teleportDynamicObject("Player", *self.__spawnpoint)
             self.__lives -= 1
             self.__gui.died()
+        
+    def __lost(self):
+        timeSpent = time.time() - self.__startingTime
+        self.__gui.lost(timeSpent)
+    
+    def __win(self):
+        timeSpent = time.time() - self.__startingTime
+        self.__gui.win(timeSpent)
 
     def __gravity(self, name: str):
         objects = self.__world.getObjectsUnder("Player", ignoreX=self.__ignoreX, ignoreY=self.__ignoreY, ignoreZ=self.__ignoreZ)
