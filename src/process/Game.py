@@ -1,4 +1,8 @@
+import time
+
+
 from src.engine.World import World
+from src.engine.GUIEngine import GUIEngine
 
 from src.view.Viewpoint import Viewpoint
 
@@ -17,27 +21,35 @@ from src.action.powerup.RotationPowerupInvertedX3D import RotationPowerupInverte
 from src.action.powerup.RotationPowerupInvertedZ3D import RotationPowerupInvertedZ3D
 
 from src.input.GameKeyboardHander import GameKeyboardHandler
+from src.input.ButtonMouseHandler import ButtonMouseHandler
 
 from src.control.EventHandler import EventHandler
+from src.control.ProcessChangedException import ProcessChangedException
 
 from src.process.Process import Process
-# TODO: import GUI engine.
 
 
 class Game(Process):
 
-    def __init__(self, width: int, height: int):
+    def __init__(self, menu, width: int, height: int):
+        self.__menu = menu
         self.__viewpoint = Viewpoint(width, height)
         self.__world = World(5, 5, 5)
         self.__eventHandler = EventHandler()
         self.__eventHandler.setKeyboardHandler(GameKeyboardHandler(self))
+        self.__eventHandler.setMouseHandler(ButtonMouseHandler(self))
+        self.__gui = GUIEngine(self, width, height, 3)
         self.__ignoreX = False
         self.__ignoreY = False
         self.__ignoreZ = False
         self.__movement = [0, 0, 0]
+        self.__size = (width, height)
 
         self.__spawnpoint: list = None
         self.__lives = 3
+        self.__paused = False
+
+        self.__startingTime = time.time()
     
     def placeObject(self, x: int, y: int, z: int, name: str):
         if name == "Player":
@@ -82,11 +94,13 @@ class Game(Process):
 
     def update(self):
         self.__eventHandler.handleEvents()
-        self.__moveObjects()
-        self.__world.updateObjects()
+        if not self.__paused:
+            self.__moveObjects()
+            self.__world.updateObjects()
         self.__viewpoint.useShader()
         self.__world.render()
         self.__viewpoint.unuseShader()
+        self.__gui.render()
 
     def move(self, dX: float, dY: float, dZ: float):
         self.__movement = [dX, dY, dZ]
@@ -114,18 +128,27 @@ class Game(Process):
             elif type(i) == Powerup:
                 i.onImpact(self)
             elif type(i) == FinishCube:
-                print("You Win!")  # Call to Application.
+                self.__win()
                 cantMove = True and not self.__ignoreY
 
         return cantMove
     
     def __died(self):
         if self.__lives == 0:
-            print("You already lost.")  # Call to Application.
+            self.__lost()
             return
         else:
             self.__world.teleportDynamicObject("Player", *self.__spawnpoint)
             self.__lives -= 1
+            self.__gui.died()
+        
+    def __lost(self):
+        timeSpent = time.time() - self.__startingTime
+        self.__gui.lost(timeSpent)
+    
+    def __win(self):
+        timeSpent = time.time() - self.__startingTime
+        self.__gui.win(timeSpent)
 
     def __gravity(self, name: str):
         objects = self.__world.getObjectsUnder("Player", ignoreX=self.__ignoreX, ignoreY=self.__ignoreY, ignoreZ=self.__ignoreZ)
@@ -144,3 +167,18 @@ class Game(Process):
         self.__ignoreX = bool(ignoreX)
         self.__ignoreY = bool(ignoreY)
         self.__ignoreZ = bool(ignoreZ)
+    
+    def pause(self):
+        self.__paused = True
+    
+    def unpause(self):
+        self.__paused = False
+    
+    def isPaused(self):
+        return self.__paused
+    
+    def quit(self):
+        raise ProcessChangedException(self.__menu)
+    
+    def getEventHandler(self):
+        return self.__eventHandler

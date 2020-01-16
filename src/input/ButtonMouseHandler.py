@@ -2,10 +2,10 @@ from src.input.IMouseHandler import IMouseHandler
 from src.input.Button import Button
 
 
-class MainMenuMouseHandler(IMouseHandler):
+class ButtonMouseHandler(IMouseHandler):
     
-    def __init__(self, menu):
-        self.__menu = menu
+    def __init__(self, process):
+        self.__process = process
         self.__buttons = set()
     
     def addButton(self, x1, y1, x2, y2, name, idleAction, clickAction, hoveringAction):

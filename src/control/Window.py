@@ -9,6 +9,8 @@ class Window:
         pg.init()
         pg.display.set_mode(size, DOUBLEBUF|OPENGL)
         glClearColor(0.8, 0.8, 1, 1)
+        glEnable(GL_BLEND)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
         self.clock = pg.time.Clock()
 
     @staticmethod

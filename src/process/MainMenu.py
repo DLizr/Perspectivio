@@ -5,7 +5,7 @@ from src.process.Process import Process
 from src.control.EventHandler import EventHandler
 from src.control.ProcessChangedException import ProcessChangedException
 
-from src.input.MainMenuMouseHandler import MainMenuMouseHandler
+from src.input.ButtonMouseHandler import ButtonMouseHandler
 
 from src.engine.SurfaceBlitter import SurfaceBlitter
 from src.engine.GameFactory import GameFactory
@@ -19,10 +19,10 @@ class MainMenu(Process):
         self.__buttons = set()
         self.__size = (width, height)
         self.__eventHandler = EventHandler()
-        self.__eventHandler.setMouseHandler(MainMenuMouseHandler(self))
+        self.__eventHandler.setMouseHandler(ButtonMouseHandler(self))
         self.__background = self.__createBackgoundSurface()
-        self.addButton(289, 250, "PlayButton", self.__openLevelSelectionScreen)
-        self.addButton(289, 380, "ExitButton", self.exit)
+
+        self.__openMainScreen()
     
     def __createBackgoundSurface(self):
         surface = pg.surface.Surface(self.__size)
@@ -61,8 +61,17 @@ class MainMenu(Process):
         self.addButton(500, 50, "4", lambda: self.__startLevel("4"))
         self.addButton(650, 50, "5", lambda: self.__startLevel("5"))
 
+        self.addButton(289, 420, "BackButton", self.__openMainScreen)
+    
+    def __openMainScreen(self):
+        self.__buttons.clear()
+        self.__eventHandler.getMouseHandler().clearButtons()
+
+        self.addButton(289, 250, "PlayButton", self.__openLevelSelectionScreen)
+        self.addButton(289, 380, "ExitButton", self.exit)
+
     def __startLevel(self, level: str):
-        game = GameFactory.openLevel(level, *self.__size)
+        game = GameFactory.openLevel(self, level, *self.__size)
 
         raise ProcessChangedException(game)
 
