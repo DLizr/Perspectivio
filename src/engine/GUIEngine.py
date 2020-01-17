@@ -120,7 +120,7 @@ class GUIEngine:
     def __getTime(self, time: int) -> str:
         hrs = time // 3600
         mins = time // 60
-        secs = time & 60
+        secs = time % 60
 
         timeString = ""
         if hrs > 0:
