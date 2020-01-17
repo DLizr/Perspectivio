@@ -105,6 +105,10 @@ class Game(Process):
         self.__gui.render()
 
     def move(self, dX: float, dY: float, dZ: float):
+        if self.__ignoreX:
+            dX = 0
+        if self.__ignoreZ:
+            dZ = 0
         self.__movement = [dX, dY, dZ]
 
     def __moveObjects(self):
