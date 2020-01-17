@@ -50,6 +50,8 @@ class Game(Process):
         self.__paused = False
 
         self.__startingTime = time.time()
+        self.__viewpoint.switchTo2D()
+        self.setIgnoreXYZ(0, 0, 1)
     
     def placeObject(self, x: int, y: int, z: int, name: str):
         if name == "Player":
@@ -103,6 +105,10 @@ class Game(Process):
         self.__gui.render()
 
     def move(self, dX: float, dY: float, dZ: float):
+        if self.__ignoreX:
+            dX = 0
+        if self.__ignoreZ:
+            dZ = 0
         self.__movement = [dX, dY, dZ]
 
     def __moveObjects(self):
