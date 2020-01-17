@@ -8,7 +8,9 @@ from src.control.ProcessChangedException import ProcessChangedException
 from src.input.ButtonMouseHandler import ButtonMouseHandler
 
 from src.engine.SurfaceBlitter import SurfaceBlitter
-from src.engine.GameFactory import GameFactory
+
+from src.factory.GameFactory import GameFactory
+from src.factory.ButtonFactory import ButtonFactory
 
 from src.rendering.object.ButtonRenderer import ButtonRenderer
 
