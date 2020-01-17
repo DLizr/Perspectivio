@@ -50,6 +50,8 @@ class Game(Process):
         self.__paused = False
 
         self.__startingTime = time.time()
+        self.__viewpoint.switchTo2D()
+        self.setIgnoreXYZ(0, 0, 1)
     
     def placeObject(self, x: int, y: int, z: int, name: str):
         if name == "Player":
