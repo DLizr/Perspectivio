@@ -8,7 +8,9 @@ from src.control.ProcessChangedException import ProcessChangedException
 from src.input.ButtonMouseHandler import ButtonMouseHandler
 
 from src.engine.SurfaceBlitter import SurfaceBlitter
-from src.engine.GameFactory import GameFactory
+
+from src.factory.GameFactory import GameFactory
+from src.factory.ButtonFactory import ButtonFactory
 
 from src.rendering.object.ButtonRenderer import ButtonRenderer
 
@@ -40,15 +42,11 @@ class MainMenu(Process):
             i.render(surface)
         SurfaceBlitter.blit(self.__size, surface)
     
-    def addButton(self, x: int, y: int, name: str, action):
-        imgIdle = pg.image.load("src/assets/" + name + ".png").convert()
-        imgHover = pg.image.load("src/assets/" + name + "Hover.png").convert()
-        imgPress = pg.image.load("src/assets/" + name + "Press.png").convert()
+    def addButton(self, x: int, y: int, text: str, action):
+        button = ButtonFactory.createButton(text, (x, y))
+        width, height = button.getSize()
 
-        width, height = imgIdle.get_size()
-
-        button = ButtonRenderer(name, (x, y), imgIdle, imgHover, imgPress)
-        self.__eventHandler.getMouseHandler().addButton(x, y, x + width, y + height, name, button.idle, action, button.hover)
+        self.__eventHandler.getMouseHandler().addButton(x, y, x + width, y + height, button.idle, action, button.hover)
         self.__buttons.add(button)
     
     def __openLevelSelectionScreen(self):
@@ -61,14 +59,14 @@ class MainMenu(Process):
         self.addButton(500, 50, "4", lambda: self.__startLevel("4"))
         self.addButton(650, 50, "5", lambda: self.__startLevel("5"))
 
-        self.addButton(289, 420, "BackButton", self.__openMainScreen)
+        self.addButton(289, 420, "Назад", self.__openMainScreen)
     
     def __openMainScreen(self):
         self.__buttons.clear()
         self.__eventHandler.getMouseHandler().clearButtons()
 
-        self.addButton(289, 250, "PlayButton", self.__openLevelSelectionScreen)
-        self.addButton(289, 380, "ExitButton", self.exit)
+        self.addButton(280, 250, "Играть", self.__openLevelSelectionScreen)
+        self.addButton(289, 380, "Выйти", self.exit)
 
     def __startLevel(self, level: str):
         game = GameFactory.openLevel(self, level, *self.__size)
