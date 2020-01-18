@@ -4,6 +4,8 @@ from src.engine.SurfaceBlitter import SurfaceBlitter
 
 from src.rendering.object.ButtonRenderer import ButtonRenderer
 
+from src.factory.ButtonFactory import ButtonFactory
+
 
 class GUIEngine:
 
@@ -17,13 +19,13 @@ class GUIEngine:
         self.__pausedButtons = set()
         self.__running = True
         self.__pauseButton = self.__createPauseButton()
-        self.__addButton(self.__width - 60, 10, "Pause", self.__pauseGame)
-        self.__addPausedButton(20, self.__height - 100, "ExitButton", self.__exitTheGame)
+        self.__addButton(self.__width - 80, 10, "||", self.__pauseGame)
+        self.__addPausedButton(20, self.__height - 100, "Меню", self.__exitTheGame)
 
         self.__baseSurface = pg.surface.Surface((width, height), pg.SRCALPHA)
     
     def __createPauseButton(self):
-        button = self.__createButton(self.__width - 60, 10, "Pause", self.__pauseGame)
+        button = self.__createButton(self.__width - 80, 10, "||", self.__pauseGame)
         self.__buttons.add(button)
         return button
     
@@ -53,16 +55,13 @@ class GUIEngine:
         pg.draw.polygon(surface, (255, 0, 0), [(x - 20, y), (x, y - 20), (x + 20, y), (x, y + 20)])
         pg.draw.polygon(surface, (0, 0, 0), [(x - 20, y), (x, y - 20), (x + 20, y), (x, y + 20)], 1)
     
-    def __createButton(self, x: int, y: int, name: str, action):
+    def __createButton(self, x: int, y: int, text: str, action):
         eventHandler = self.__game.getEventHandler()
-        imgIdle = pg.image.load("src/assets/" + name + ".png").convert()
-        imgHover = pg.image.load("src/assets/" + name + "Hover.png").convert()
-        imgPress = pg.image.load("src/assets/" + name + "Press.png").convert()
 
-        width, height = imgIdle.get_size()
+        button = ButtonFactory.createButton(text, (x, y))
+        width, height = button.getSize()
 
-        button = ButtonRenderer(name, (x, y), imgIdle, imgHover, imgPress)
-        eventHandler.getMouseHandler().addButton(x, y, x + width, y + height, name, button.idle, action, button.hover)
+        eventHandler.getMouseHandler().addButton(x, y, x + width, y + height, text, button.idle, action, button.hover)
 
         return button
     

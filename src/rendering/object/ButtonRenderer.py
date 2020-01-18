@@ -17,6 +17,9 @@ class ButtonRenderer:
     def idle(self):
         self.__currentImage = self.__imageIdle
     
+    def getSize(self):
+        return self.__currentImage.get_size()
+    
     def render(self, surface):
         surface.blit(self.__currentImage, self.__pos)
     

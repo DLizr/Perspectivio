@@ -11,20 +11,20 @@ class ButtonFactory:
         textSurface = font.render(text, 1, (255, 255, 255))
 
         width, height = textSurface.get_size()
-        background = pg.surface.Surface((width + 30, height))
+        background = pg.surface.Surface((width + 30, height + 5))
         background.fill(pg.Color("#3e6483"))
-        pg.draw.rect(background, pg.color.Color("#174164"), [(3, 3), (width + 23, height - 7)], 6)
+        pg.draw.rect(background, pg.color.Color("#174164"), [(3, 3), (width + 23, height - 2)], 6)
 
         idle = background.copy()
         idle.blit(textSurface, (15, 0))
 
         hover = idle.copy()
-        pg.draw.rect(hover, (255, 255, 255), [(3, 3), (width + 23, height - 7)], 6)
+        pg.draw.rect(hover, (255, 255, 255), [(3, 3), (width + 23, height - 2)], 6)
 
         clicked = background.copy()
         clicked.fill(pg.color.Color("#174164"))
         clicked.blit(textSurface, (15, 0))
-        pg.draw.rect(clicked, (255, 255, 255), [(3, 3), (width + 23, height - 7)], 6)
+        pg.draw.rect(clicked, (255, 255, 255), [(3, 3), (width + 23, height - 2)], 6)
 
         button = ButtonRenderer("", pos, idle, hover, clicked)
         return button
