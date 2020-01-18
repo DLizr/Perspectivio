@@ -26,5 +26,5 @@ class ButtonFactory:
         clicked.blit(textSurface, (15, 0))
         pg.draw.rect(clicked, (255, 255, 255), [(3, 3), (width + 23, height - 2)], 6)
 
-        button = ButtonRenderer("", pos, idle, hover, clicked)
+        button = ButtonRenderer(pos, idle, hover, clicked)
         return button

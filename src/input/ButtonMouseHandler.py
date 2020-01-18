@@ -8,8 +8,8 @@ class ButtonMouseHandler(IMouseHandler):
         self.__process = process
         self.__buttons = set()
     
-    def addButton(self, x1, y1, x2, y2, name, idleAction, clickAction, hoveringAction):
-        self.__buttons.add(Button(x1, y1, x2, y2, name, idleAction, clickAction, hoveringAction))
+    def addButton(self, x1, y1, x2, y2, idleAction, clickAction, hoveringAction):
+        self.__buttons.add(Button(x1, y1, x2, y2, idleAction, clickAction, hoveringAction))
     
     def clearButtons(self):
         self.__buttons.clear()

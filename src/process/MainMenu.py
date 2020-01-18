@@ -46,7 +46,7 @@ class MainMenu(Process):
         button = ButtonFactory.createButton(text, (x, y))
         width, height = button.getSize()
 
-        self.__eventHandler.getMouseHandler().addButton(x, y, x + width, y + height, text, button.idle, action, button.hover)
+        self.__eventHandler.getMouseHandler().addButton(x, y, x + width, y + height, button.idle, action, button.hover)
         self.__buttons.add(button)
     
     def __openLevelSelectionScreen(self):

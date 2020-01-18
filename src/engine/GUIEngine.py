@@ -61,15 +61,15 @@ class GUIEngine:
         button = ButtonFactory.createButton(text, (x, y))
         width, height = button.getSize()
 
-        eventHandler.getMouseHandler().addButton(x, y, x + width, y + height, text, button.idle, action, button.hover)
+        eventHandler.getMouseHandler().addButton(x, y, x + width, y + height, button.idle, action, button.hover)
 
         return button
     
-    def __addButton(self, x: int, y: int, name: str, action):
-        self.__buttons.add(self.__createButton(x, y, name, action))
+    def __addButton(self, x: int, y: int, text: str, action):
+        self.__buttons.add(self.__createButton(x, y, text, action))
     
-    def __addPausedButton(self, x: int, y: int, name: str, action):
-        self.__pausedButtons.add(self.__createButton(x, y, name, action))
+    def __addPausedButton(self, x: int, y: int, text: str, action):
+        self.__pausedButtons.add(self.__createButton(x, y, text, action))
 
     def died(self):
         self.__lives -= 1

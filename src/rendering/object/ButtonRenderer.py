@@ -1,7 +1,6 @@
 class ButtonRenderer:
 
-    def __init__(self, name, pos, imageIdle, imageHovering, imageClicked):
-        self.__name = name
+    def __init__(self, pos, imageIdle, imageHovering, imageClicked):
         self.__pos = pos
         self.__imageIdle = imageIdle
         self.__imageHovering = imageHovering
@@ -22,6 +21,3 @@ class ButtonRenderer:
     
     def render(self, surface):
         surface.blit(self.__currentImage, self.__pos)
-    
-    def getName(self):
-        return self.__name
