@@ -5,12 +5,22 @@ class Field:
 
     def __init__(self, width: int, height: int, depth: int):
         self.__field = np.array([[[None for _ in range(depth)] for _ in range(height)] for _ in range(width)])
+        self.__dynamicField = dict()
         self.__width = width
         self.__height = height
         self.__depth = depth
     
-    def placeObject(self, obj, x: int, y: int, z: int,):
+    def placeObject(self, obj, x: int, y: int, z: int):
+        if x >= self.__width:
+            self.__field = np.concatenate((self.__field, np.zeros((x + 1 - self.__width, self.__height, self.__depth))), axis=0)
+        if y >= self.__height:
+            self.__field = np.concatenate((self.__field, np.zeros((self.__width, y + 1 - self.__height, self.__depth))), axis=1)
+        if z >= self.__depth:
+            self.__field = np.concatenate((self.__field, np.zeros((self.__width, self.__height, z + 1 - self.__depth))), axis=2)
         self.__field[x][y][z] = obj
+    
+    def placeDynamicObject(self, obj, x: int, y: int, z: int):
+        self.__dynamicField[obj] = (x, y, z)
     
     def removeObject(self, x: int, y: int, z: int):
         self.__field[x][y][z] = None
@@ -40,12 +50,5 @@ class Field:
 
         return self.__field[x1:x2, y1:y2, z1:z2].flatten()
     
-    def moveObject(self, x1: int, y1: int, z1: int, x2: int, y2: int, z2: int):
-        try:
-            obj = self.__field[x1][y1][z1]
-            if self.__field[x2][y2][z2] != obj and self.__field[x2][y2][z2]:
-                return
-            self.__field[x1][y1][z1] = None
-            self.__field[x2][y2][z2] = obj
-        except IndexError:
-            raise IndexError("Moving out of the field")
+    def moveObject(self, obj, x: int, y: int, z: int):
+        self.__dynamicField[obj] = (x, y, z)

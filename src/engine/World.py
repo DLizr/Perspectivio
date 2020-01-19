@@ -18,7 +18,7 @@ class World:
         self.__scene.putObject(obj)
     
     def addDynamicObject(self, x: int, y: int, z: int, obj, name: str):
-        self.__field.placeObject(obj, x // self.cubeWidth, y // self.cubeWidth, z // self.cubeWidth)
+        self.__field.placeDynamicObject(obj, x // self.cubeWidth, y // self.cubeWidth, z // self.cubeWidth)
         self.__scene.putDynamicObject(name, obj)
     
     def addUpdatableObject(self, x: int, y: int, z: int, obj):
@@ -35,13 +35,11 @@ class World:
         if newPos.min() < 0:
             return
 
-        fieldPos = (pos // self.cubeWidth).astype(int)
         newFieldPos = newPos.astype(int) // self.cubeWidth
-
         if not self.__field.canMoveTo(*newFieldPos):
             return
 
-        self.__field.moveObject(*fieldPos, *newFieldPos)
+        self.__field.moveObject(obj, *newFieldPos)
         obj.moveX(dX) if dX else 0
         obj.moveY(dY) if dY else 0
         obj.moveZ(dZ) if dZ else 0
@@ -52,10 +50,8 @@ class World:
         obj = self.__scene.getDynamicObject(name)
 
         pos = obj.getPosition()
-        fieldPos = (pos // self.cubeWidth).astype(int)
 
-        self.__field.removeObject(*fieldPos)
-        self.__field.placeObject(obj, x // self.cubeWidth, y // self.cubeWidth, z // self.cubeWidth)
+        self.__field.moveObject(obj, x // self.cubeWidth, y // self.cubeWidth, z // self.cubeWidth)
 
         dX = x - pos[0]
         dY = y - pos[1]
