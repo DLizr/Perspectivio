@@ -121,7 +121,7 @@ class Game(Process):
         dX, dY, dZ = self.__movement
         self.__world.moveDynamicObject("Player", dX, dY, dZ)
         objectsCollided = self.__world.getObjectsColliding("Player", ignoreX=self.__ignoreX, ignoreY=self.__ignoreY, ignoreZ=self.__ignoreZ)
-        if self.__checkCollidedObjects(objectsCollided):
+        if self.__checkCollidedObjects(objectsCollided) and not self.__ignoreY:
             self.__world.moveDynamicObject("Player", -dX, -dY, -dZ)
 
     def __checkCollidedObjects(self, objects):
@@ -130,12 +130,12 @@ class Game(Process):
             if type(i) == StaticPyramid:
                 self.__died()
             elif type(i) == StaticCube:
-                cantMove = True and not self.__ignoreY
+                cantMove = True
             elif type(i) == Powerup:
                 i.onImpact(self)
             elif type(i) == FinishCube:
                 self.__win()
-                cantMove = True and not self.__ignoreY
+                cantMove = True
 
         return cantMove
     
@@ -158,10 +158,10 @@ class Game(Process):
 
     def __gravity(self, name: str):
         objects = self.__world.getObjectsUnder("Player", ignoreX=self.__ignoreX, ignoreY=self.__ignoreY, ignoreZ=self.__ignoreZ)
-        if self.__checkCollidedObjects(objects) != self.__ignoreY:
+        if self.__checkCollidedObjects(objects):
             self.__movement[1] = 0
             return
-        if self.__world.isOutOfTheWorld(name):
+        if self.__world.isOutOfTheWorld(name) or self.__ignoreY:
             self.__died()
         else:
             self.__movement[1] = -0.25
