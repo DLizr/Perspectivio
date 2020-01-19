@@ -158,7 +158,7 @@ class Game(Process):
 
     def __gravity(self, name: str):
         objects = self.__world.getObjectsUnder("Player", ignoreX=self.__ignoreX, ignoreY=self.__ignoreY, ignoreZ=self.__ignoreZ)
-        if self.__checkCollidedObjects(objects):
+        if self.__checkCollidedObjects(objects) != self.__ignoreY:
             self.__movement[1] = 0
             return
         if self.__world.isOutOfTheWorld(name):
