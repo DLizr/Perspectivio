@@ -9,7 +9,13 @@ class Field:
         self.__height = height
         self.__depth = depth
     
-    def placeObject(self, obj, x: int, y: int, z: int,):
+    def placeObject(self, obj, x: int, y: int, z: int):
+        if x >= self.__width:
+            self.__field = np.concatenate((self.__field, np.zeros((x + 1 - self.__width, self.__height, self.__depth))), axis=0)
+        if y >= self.__height:
+            self.__field = np.concatenate((self.__field, np.zeros((self.__width, y + 1 - self.__height, self.__depth))), axis=1)
+        if z >= self.__depth:
+            self.__field = np.concatenate((self.__field, np.zeros((self.__width, self.__height, z + 1 - self.__depth))), axis=2)
         self.__field[x][y][z] = obj
     
     def removeObject(self, x: int, y: int, z: int):
