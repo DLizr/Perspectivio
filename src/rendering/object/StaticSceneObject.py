@@ -11,7 +11,7 @@ class StaticSceneObject:
     def __init__(self, vertices: list, indices: list, colors: list=None):
 
         if not colors:
-            colors = [1] * len(vertices)  # FIXME: bad.
+            colors = [1] * len(vertices)
         colors = np.array(colors, dtype="float32")
 
         self.quadsCount = len(indices)

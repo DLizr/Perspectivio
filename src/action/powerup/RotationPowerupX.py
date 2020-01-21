@@ -23,4 +23,6 @@ class RotationPowerupX:
     
     def onImpact(self, game):
         game.setProjectionMatrix(self.__matrix)
+        if game.getIgnoreXYZ() != (1, 0, 0):
+            game.teleportPlayer(*self.__centerPosition)
         game.setIgnoreXYZ(1, 0, 0)

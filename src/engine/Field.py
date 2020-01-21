@@ -52,3 +52,6 @@ class Field:
     
     def moveObject(self, obj, x: int, y: int, z: int):
         self.__dynamicField[obj] = (x, y, z)
+    
+    def getSize(self) -> tuple:
+        return (self.__width, self.__height, self.__depth)

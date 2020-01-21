@@ -121,7 +121,7 @@ class Game(Process):
         dX, dY, dZ = self.__movement
         self.__world.moveDynamicObject("Player", dX, dY, dZ)
         objectsCollided = self.__world.getObjectsColliding("Player", ignoreX=self.__ignoreX, ignoreY=self.__ignoreY, ignoreZ=self.__ignoreZ)
-        if self.__checkCollidedObjects(objectsCollided):
+        if self.__checkCollidedObjects(objectsCollided) and not self.__ignoreY:
             self.__world.moveDynamicObject("Player", -dX, -dY, -dZ)
 
     def __checkCollidedObjects(self, objects):
@@ -130,12 +130,12 @@ class Game(Process):
             if type(i) == StaticPyramid:
                 self.__died()
             elif type(i) == StaticCube:
-                cantMove = True and not self.__ignoreY
+                cantMove = True
             elif type(i) == Powerup:
                 i.onImpact(self)
             elif type(i) == FinishCube:
                 self.__win()
-                cantMove = True and not self.__ignoreY
+                cantMove = True
 
         return cantMove
     
@@ -145,6 +145,8 @@ class Game(Process):
             return
         else:
             self.__world.teleportDynamicObject("Player", *self.__spawnpoint)
+            self.__viewpoint.switchTo2D()
+            self.setIgnoreXYZ(0, 0, 1)
             self.__lives -= 1
             self.__gui.died()
         
@@ -155,13 +157,20 @@ class Game(Process):
     def __win(self):
         timeSpent = time.time() - self.__startingTime
         self.__gui.win(timeSpent)
+    
+    def teleportPlayer(self, x: int, y: int, z: int):
+        self.__world.teleportDynamicObject("Player", x, y, z)
+    
+    def playerOnTop(self):
+        y = self.__world.getSize()[1]
+        self.__world.teleportDynamicObject("Player", -1, y, -1)
 
     def __gravity(self, name: str):
         objects = self.__world.getObjectsUnder("Player", ignoreX=self.__ignoreX, ignoreY=self.__ignoreY, ignoreZ=self.__ignoreZ)
         if self.__checkCollidedObjects(objects):
             self.__movement[1] = 0
             return
-        if self.__world.isOutOfTheWorld(name):
+        if self.__world.isOutOfTheWorld(name) or self.__ignoreY:
             self.__died()
         else:
             self.__movement[1] = -0.25
@@ -173,6 +182,9 @@ class Game(Process):
         self.__ignoreX = bool(ignoreX)
         self.__ignoreY = bool(ignoreY)
         self.__ignoreZ = bool(ignoreZ)
+    
+    def getIgnoreXYZ(self) -> tuple:
+        return int(self.__ignoreX), int(self.__ignoreY), int(self.__ignoreZ)
     
     def pause(self):
         self.__paused = True
