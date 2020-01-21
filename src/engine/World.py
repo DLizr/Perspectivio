@@ -36,8 +36,6 @@ class World:
             return
 
         newFieldPos = newPos.astype(int) // self.cubeWidth
-        if not self.__field.canMoveTo(*newFieldPos):
-            return
 
         self.__field.moveObject(obj, *newFieldPos)
         obj.moveX(dX) if dX else 0
@@ -50,6 +48,12 @@ class World:
         obj = self.__scene.getDynamicObject(name)
 
         pos = obj.getPosition()
+        if x < 0:
+            x = pos[0]
+        if y < 0:
+            y = pos[1]
+        if z < 0:
+            z = pos[2]
 
         self.__field.moveObject(obj, x // self.cubeWidth, y // self.cubeWidth, z // self.cubeWidth)
 
@@ -107,6 +111,10 @@ class World:
     
     def getField(self) -> Field:
         return self.__field
+    
+    def getSize(self) -> tuple:
+        x, y, z = self.__field.getSize()
+        return (x * self.cubeWidth, y * self.cubeWidth, z * self.cubeWidth)
     
     def render(self):
         self.__scene.render()

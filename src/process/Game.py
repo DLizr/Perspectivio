@@ -145,6 +145,8 @@ class Game(Process):
             return
         else:
             self.__world.teleportDynamicObject("Player", *self.__spawnpoint)
+            self.__viewpoint.switchTo2D()
+            self.setIgnoreXYZ(0, 0, 1)
             self.__lives -= 1
             self.__gui.died()
         
@@ -155,6 +157,13 @@ class Game(Process):
     def __win(self):
         timeSpent = time.time() - self.__startingTime
         self.__gui.win(timeSpent)
+    
+    def teleportPlayer(self, x: int, y: int, z: int):
+        self.__world.teleportDynamicObject("Player", x, y, z)
+    
+    def playerOnTop(self):
+        y = self.__world.getSize()[1]
+        self.__world.teleportDynamicObject("Player", -1, y, -1)
 
     def __gravity(self, name: str):
         objects = self.__world.getObjectsUnder("Player", ignoreX=self.__ignoreX, ignoreY=self.__ignoreY, ignoreZ=self.__ignoreZ)
@@ -173,6 +182,9 @@ class Game(Process):
         self.__ignoreX = bool(ignoreX)
         self.__ignoreY = bool(ignoreY)
         self.__ignoreZ = bool(ignoreZ)
+    
+    def getIgnoreXYZ(self) -> tuple:
+        return int(self.__ignoreX), int(self.__ignoreY), int(self.__ignoreZ)
     
     def pause(self):
         self.__paused = True
