@@ -12,6 +12,8 @@ from src.action.powerup.RotationPowerupZ3D import RotationPowerupZ3D
 from src.action.powerup.RotationPowerupInvertedX3D import RotationPowerupInvertedX3D
 from src.action.powerup.RotationPowerupInvertedZ3D import RotationPowerupInvertedZ3D
 
+from src.behavior.ConstantMovingBetweenTwoPositions import ConstantMovingBetweenTwoPositions
+
 
 class LevelDecryptor:
     cubeWidth = 2
@@ -69,5 +71,16 @@ class LevelDecryptor:
             return  # Exception?
     
     @staticmethod
-    def __place7ArgsObject(args, name):
-        return
+    def __place7ArgsObject(args, game):
+        x1, y1, z1, x2, y2, z2, name = args
+        x1 = int(x1) * LevelDecryptor.cubeWidth
+        y1 = int(y1) * LevelDecryptor.cubeWidth
+        z1 = int(z1) * LevelDecryptor.cubeWidth
+        x2 = int(x2) * LevelDecryptor.cubeWidth
+        y2 = int(y2) * LevelDecryptor.cubeWidth
+        z2 = int(z2) * LevelDecryptor.cubeWidth
+
+        if name == "MovingCube":
+            cube = DynamicCube([x1, y1, z1], 2, [1, 1, 0] * 8)
+            cube.addBehavior(ConstantMovingBetweenTwoPositions([x1, y1, z1], [x2, y2, z2], 50))
+            game.placeUpdatableObject(x1, y1, z1, cube)
