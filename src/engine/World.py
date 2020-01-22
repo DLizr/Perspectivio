@@ -104,7 +104,7 @@ class World:
 
     def updateObjects(self):
         for i in self.__scene.getUpdatableObjects():
-            i.update()
+            i.update(self)
     
     def getScene(self) -> Scene:
         return self.__scene

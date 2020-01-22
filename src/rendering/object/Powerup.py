@@ -100,7 +100,7 @@ class Powerup(DynamicSceneObject):
     def render(self):
         super().render(GL_TRIANGLES)
 
-    def update(self):
+    def update(self, world):
         self.__rotationEngine.update(self._vertices)
         self.__hoveringEngine.update(self._vertices)
         self._updateVertices()
