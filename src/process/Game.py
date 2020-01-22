@@ -53,46 +53,18 @@ class Game(Process):
         self.__viewpoint.switchTo2D()
         self.setIgnoreXYZ(0, 0, 1)
     
-    def placeObject(self, x: int, y: int, z: int, name: str):
-        if name == "Player":
-            self.__world.addDynamicObject(x, y, z, DynamicCube([x, y, z], 2, [0, 0, 1] * 8), name)
-            self.__spawnpoint = [x, y, z]
-        elif name == "Cube":
-            self.__world.addObject(x, y, z, StaticCube([x, y, z], 2))
-        elif name == "Spike":
-            self.__world.addObject(x, y, z, StaticPyramid([x, y, z], 2))
-        elif name == "RPowerupUp":
-            powerup = Powerup([x, y, z], 1)
-            powerup.setAction(RotationPowerupUp(powerup))
-            self.__world.addUpdatableObject(x, y, z, powerup)
-        elif name == "RPowerupX":
-            powerup = Powerup([x, y, z], 1)
-            powerup.setAction(RotationPowerupX(powerup))
-            self.__world.addUpdatableObject(x, y, z, powerup)
-        elif name == "RPowerupZ":
-            powerup = Powerup([x, y, z], 1)
-            powerup.setAction(RotationPowerupZ(powerup))
-            self.__world.addUpdatableObject(x, y, z, powerup)
-        elif name == "RPowerupX3D":
-            powerup = Powerup([x, y, z], 1)
-            powerup.setAction(RotationPowerupX3D(powerup))
-            self.__world.addUpdatableObject(x, y, z, powerup)
-        elif name == "RPowerupZ3D":
-            powerup = Powerup([x, y, z], 1)
-            powerup.setAction(RotationPowerupZ3D(powerup))
-            self.__world.addUpdatableObject(x, y, z, powerup)
-        elif name == "RPowerup-X3D":
-            powerup = Powerup([x, y, z], 1)
-            powerup.setAction(RotationPowerupInvertedX3D(powerup))
-            self.__world.addUpdatableObject(x, y, z, powerup)
-        elif name == "RPowerup-Z3D":
-            powerup = Powerup([x, y, z], 1)
-            powerup.setAction(RotationPowerupInvertedZ3D(powerup))
-            self.__world.addUpdatableObject(x, y, z, powerup)
-        elif name == "Finish":
-            self.__world.addObject(x, y, z, FinishCube([x, y, z], 2))
-        else:
-            return  # Exception?
+    def placeObject(self, x: int, y: int, z: int, obj):
+        self.__world.addObject(x, y, z, obj)
+    
+    def placeDynamicObject(self, x: int, y: int, z: int, obj, name: str):
+        self.__world.addDynamicObject(x, y, z, obj, name)
+    
+    def placeUpdatableObject(self, x: int, y: int, z: int, obj):
+        self.__world.addUpdatableObject(x, y, z, obj)
+    
+    def placePlayer(self, x: int, y: int, z: int, obj):
+        self.__world.addDynamicObject(x, y, z, obj, "Player")
+        self.__spawnpoint = [x, y, z]
 
     def update(self):
         self.__eventHandler.handleEvents()
