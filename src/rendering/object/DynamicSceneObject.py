@@ -10,6 +10,7 @@ class DynamicSceneObject(StaticSceneObject):
         super().__init__(vertices, indices, colors)
         self._vertices = np.array(vertices, dtype="float32")
         self._centerPosition: np.ndarray = None
+        self._behaviorQueue = []
     
     def _updateVertices(self):
         self.vertexBuffer.updateData(np.array(self._vertices, dtype="float32"))
@@ -42,9 +43,13 @@ class DynamicSceneObject(StaticSceneObject):
     def __moveWireframe(self):
         for i in self._childObjects:
             i.updateVertices(self._vertices)
+    
+    def addBehavior(self, behavior):
+        self._behaviorQueue.append(behavior)
 
-    def update(self):
-        return
+    def update(self, world):
+        for i in self._behaviorQueue:
+            i.update(world)
     
     def __repr__(self):
         return "DynamicObject({})".format(type(self))
