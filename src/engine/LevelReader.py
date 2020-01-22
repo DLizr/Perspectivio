@@ -1,8 +1,9 @@
 from src.process.Game import Game
 
+from src.engine.LevelDecryptor import LevelDecryptor
+
 
 class LevelReader:
-    cubeWidth = 2
 
     def loadLevel(self, game: Game, filename: str):
         self.filename = filename
@@ -13,13 +14,7 @@ class LevelReader:
                 line = line.strip()
                 if not line or line.startswith("#"):
                     continue
-                x, y, z, name = self.__getDataIfCorrect(line)
-                game.placeObject(int(x) * self.cubeWidth, int(y) * self.cubeWidth, int(z) * self.cubeWidth, name)
-                    
-    
-    def __getDataIfCorrect(self, line):
-        try:
-            x, y, z, name = line.split()
-        except ValueError:
-            raise IOError("Unable to read the file {} on line {}.".format(self.filename, self.n))
-        return x, y, z, name
+                try:
+                    LevelDecryptor.placeObjectFromArgs(line.split(), game)
+                except IOError as e:
+                    raise IOError("File {}; line {}; reading error: {}".format(filename, self.n, str(e)))
