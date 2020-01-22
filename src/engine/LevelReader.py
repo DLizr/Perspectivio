@@ -14,4 +14,7 @@ class LevelReader:
                 line = line.strip()
                 if not line or line.startswith("#"):
                     continue
-                LevelDecryptor.placeObjectFromArgs(line.split(), game)
+                try:
+                    LevelDecryptor.placeObjectFromArgs(line.split(), game)
+                except IOError as e:
+                    raise IOError("File {}; line {}; reading error: {}".format(filename, self.n, str(e)))

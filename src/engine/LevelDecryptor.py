@@ -22,8 +22,8 @@ class LevelDecryptor:
     def placeObjectFromArgs(args, game):
         if len(args) == 4:
             LevelDecryptor.__place4ArgsObject(args, game)
-        elif len(args) == 7:
-            LevelDecryptor.__place7ArgsObject(args, game)
+        elif len(args) == 8:
+            LevelDecryptor.__place8ArgsObject(args, game)
 
     @staticmethod
     def __place4ArgsObject(args, game):
@@ -68,19 +68,25 @@ class LevelDecryptor:
         elif name == "Finish":
             game.placeObject(x, y, z, FinishCube([x, y, z], 2))
         else:
-            return  # Exception?
+            raise IOError("Unknown object name: {}".format(name))
     
     @staticmethod
-    def __place7ArgsObject(args, game):
-        x1, y1, z1, x2, y2, z2, name = args
+    def __place8ArgsObject(args, game):
+        x1, y1, z1, x2, y2, z2, time, name = args
         x1 = int(x1) * LevelDecryptor.cubeWidth
         y1 = int(y1) * LevelDecryptor.cubeWidth
         z1 = int(z1) * LevelDecryptor.cubeWidth
         x2 = int(x2) * LevelDecryptor.cubeWidth
         y2 = int(y2) * LevelDecryptor.cubeWidth
         z2 = int(z2) * LevelDecryptor.cubeWidth
+        time = float(time) * 30
+
+        if time <= 0:
+            raise IOError("Time must be greater than zero.")
 
         if name == "MovingCube":
             cube = DynamicCube([x1, y1, z1], 2, [1, 1, 0] * 8)
-            cube.addBehavior(ConstantMovingBetweenTwoPositions([x1, y1, z1], [x2, y2, z2], 50))
+            cube.addBehavior(ConstantMovingBetweenTwoPositions([x1, y1, z1], [x2, y2, z2], time))
             game.placeUpdatableObject(x1, y1, z1, cube)
+        else:
+            raise IOError("Unknown object name: {}".format(name))
