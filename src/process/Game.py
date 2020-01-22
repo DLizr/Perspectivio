@@ -103,6 +103,8 @@ class Game(Process):
                 self.__died()
             elif type(i) == StaticCube:
                 cantMove = True
+            elif type(i) == DynamicCube:
+                cantMove = True  # FIXME: Works wrong.
             elif type(i) == Powerup:
                 i.onImpact(self)
             elif type(i) == FinishCube:
