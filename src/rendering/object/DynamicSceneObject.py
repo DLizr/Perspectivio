@@ -49,7 +49,7 @@ class DynamicSceneObject(StaticSceneObject):
 
     def update(self, world):
         for i in self._behaviorQueue:
-            i.update(world)
+            i.update(self, world)
     
     def __repr__(self):
         return "DynamicObject({})".format(type(self))
