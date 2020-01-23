@@ -29,8 +29,10 @@ class MainMenu(Process):
     def __createBackgoundSurface(self):
         surface = pg.surface.Surface(self.__size)
         img = pg.image.load("src/assets/Background.png").convert()
+        title = pg.image.load("src/assets/Title.png").convert_alpha()
 
         surface.blit(img, (0, 0))
+        surface.blit(title, (100, 50))
         
         return surface
 
