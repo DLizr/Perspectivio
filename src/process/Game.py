@@ -90,11 +90,30 @@ class Game(Process):
     def __movePlayer(self):
         if not any(self.__movement):
             return
+        stuck = False
         dX, dY, dZ = self.__movement
-        self.__world.moveDynamicObject("Player", dX, dY, dZ)
+
         objectsCollided = self.__world.getObjectsColliding("Player", ignoreX=self.__ignoreX, ignoreY=self.__ignoreY, ignoreZ=self.__ignoreZ)
         if self.__checkCollidedObjects(objectsCollided) and not self.__ignoreY:
-            self.__world.moveDynamicObject("Player", -dX, -dY, -dZ)
+            stuck = True
+
+        if dX:
+            self.__world.moveDynamicObject("Player", dX, 0, 0)
+            objectsCollided = self.__world.getObjectsColliding("Player", ignoreX=self.__ignoreX, ignoreY=self.__ignoreY, ignoreZ=self.__ignoreZ)
+            if self.__checkCollidedObjects(objectsCollided) and not self.__ignoreY:
+                self.__world.moveDynamicObject("Player", -dX, 0, 0)
+        
+        if dY:
+            self.__world.moveDynamicObject("Player", 0, dY, 0)
+            objectsCollided = self.__world.getObjectsColliding("Player", ignoreX=self.__ignoreX, ignoreY=self.__ignoreY, ignoreZ=self.__ignoreZ)
+            if self.__checkCollidedObjects(objectsCollided) and not self.__ignoreY and not stuck:
+                self.__world.moveDynamicObject("Player", 0, -dY, 0)
+        
+        if dZ:
+            self.__world.moveDynamicObject("Player", 0, 0, dZ)
+            objectsCollided = self.__world.getObjectsColliding("Player", ignoreX=self.__ignoreX, ignoreY=self.__ignoreY, ignoreZ=self.__ignoreZ)
+            if self.__checkCollidedObjects(objectsCollided) and not self.__ignoreY:
+                self.__world.moveDynamicObject("Player", 0, 0, -dZ)
 
     def __checkCollidedObjects(self, objects):
         cantMove = False
