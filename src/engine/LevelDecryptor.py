@@ -24,6 +24,8 @@ class LevelDecryptor:
             LevelDecryptor.__place4ArgsObject(args, game)
         elif len(args) == 8:
             LevelDecryptor.__place8ArgsObject(args, game)
+        else:
+            raise IOError("Invalid syntax.")
 
     @staticmethod
     def __place4ArgsObject(args, game):
@@ -68,7 +70,7 @@ class LevelDecryptor:
         elif name == "Finish":
             game.placeObject(x, y, z, FinishCube([x, y, z], 2))
         else:
-            raise IOError("Unknown object name: {}".format(name))
+            raise IOError("Unknown object name: {}.".format(name))
     
     @staticmethod
     def __place8ArgsObject(args, game):
@@ -89,4 +91,4 @@ class LevelDecryptor:
             cube.addBehavior(ConstantMovingBetweenTwoPositions([x1, y1, z1], [x2, y2, z2], time))
             game.placeUpdatableObject(x1, y1, z1, cube)
         else:
-            raise IOError("Unknown object name: {}".format(name))
+            raise IOError("Unknown object name: {}.".format(name))

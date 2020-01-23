@@ -1,3 +1,5 @@
+import sys
+
 from src.process.Game import Game
 
 from src.engine.LevelDecryptor import LevelDecryptor
@@ -17,4 +19,4 @@ class LevelReader:
                 try:
                     LevelDecryptor.placeObjectFromArgs(line.split(), game)
                 except IOError as e:
-                    raise IOError("File {}; line {}; reading error: {}".format(filename, self.n, str(e)))
+                    print("[ERROR] File {} line {} reading error: {}".format(filename, self.n, str(e)), file=sys.stderr)
