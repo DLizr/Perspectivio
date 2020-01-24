@@ -13,10 +13,13 @@ class Field:
     def placeObject(self, obj, x: int, y: int, z: int):
         if x >= self.__width:
             self.__field = np.concatenate((self.__field, np.zeros((x + 1 - self.__width, self.__height, self.__depth))), axis=0)
+            self.__width = x + 1
         if y >= self.__height:
             self.__field = np.concatenate((self.__field, np.zeros((self.__width, y + 1 - self.__height, self.__depth))), axis=1)
+            self.__height = y + 1
         if z >= self.__depth:
             self.__field = np.concatenate((self.__field, np.zeros((self.__width, self.__height, z + 1 - self.__depth))), axis=2)
+            self.__depth = z + 1
         self.__field[x][y][z] = obj
     
     def placeDynamicObject(self, obj, x: int, y: int, z: int):
