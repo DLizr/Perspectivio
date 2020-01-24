@@ -3,8 +3,6 @@ from src.engine.CollisionChecker import CollisionChecker
 
 from src.rendering.Scene import Scene
 
-import numpy as np
-
 
 class World:
     cubeWidth = 2
@@ -44,8 +42,6 @@ class World:
         obj.moveX(dX) if dX else 0
         obj.moveY(dY) if dY else 0
         obj.moveZ(dZ) if dZ else 0
-
-        return True
     
     def teleportDynamicObject(self, name: str, x: int, y: int, z: int):
         obj = self.__scene.getDynamicObject(name)
@@ -68,7 +64,7 @@ class World:
         obj.moveY(dY) if dY else 0
         obj.moveZ(dZ) if dZ else 0
 
-    def getObjectsColliding(self, name: str, ignoreX=False, ignoreY=False, ignoreZ=False):
+    def getObjectsColliding(self, name: str, ignoreX=False, ignoreY=False, ignoreZ=False) -> set:
         objects = set()
         obj = self.__scene.getDynamicObject(name)
 
@@ -98,7 +94,7 @@ class World:
         
         return objects
 
-    def isOutOfTheWorld(self, name: str):
+    def isOutOfTheWorld(self, name: str) -> bool:
         obj = self.__scene.getDynamicObject(name)
         y = obj.getPosition()[1]
         if y <= 1 * self.cubeWidth:

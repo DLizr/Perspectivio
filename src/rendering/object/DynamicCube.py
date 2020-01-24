@@ -47,5 +47,5 @@ class DynamicCube(DynamicSceneObject):
         return self.__width
     
     @staticmethod
-    def getShape():
+    def getShape() -> str:
         return "Cube"

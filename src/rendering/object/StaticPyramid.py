@@ -1,4 +1,4 @@
-from OpenGL.GL import GL_TRIANGLES
+from OpenGL.GL import GL_TRIANGLES, GL_QUADS
 
 from src.rendering.object.StaticSceneObject import StaticSceneObject
 from src.rendering.object.Wireframe import Wireframe
@@ -42,16 +42,16 @@ class StaticPyramid(StaticSceneObject):
         self.addChildObject(Wireframe(vertices, indices, [0, 0, 0]))
 
     # Override
-    def getPosition(self):
+    def getPosition(self) -> list:
         return self._centerPosition.copy()
 
-    def getWidth(self):
+    def getWidth(self) -> int:
         return self.__side
 
     # Override
-    def render(self):
+    def render(self, mode=GL_QUADS):
         super().render(GL_TRIANGLES)
     
     @staticmethod
-    def getShape():
+    def getShape() -> str:
         return "Cube"

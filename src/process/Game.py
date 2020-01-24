@@ -12,14 +12,6 @@ from src.rendering.object.StaticPyramid import StaticPyramid
 from src.rendering.object.Powerup import Powerup
 from src.rendering.object.FinishCube import FinishCube
 
-from src.action.powerup.RotationPowerupUp import RotationPowerupUp
-from src.action.powerup.RotationPowerupX import RotationPowerupX
-from src.action.powerup.RotationPowerupZ import RotationPowerupZ
-from src.action.powerup.RotationPowerupX3D import RotationPowerupX3D
-from src.action.powerup.RotationPowerupZ3D import RotationPowerupZ3D
-from src.action.powerup.RotationPowerupInvertedX3D import RotationPowerupInvertedX3D
-from src.action.powerup.RotationPowerupInvertedZ3D import RotationPowerupInvertedZ3D
-
 from src.input.GameKeyboardHander import GameKeyboardHandler
 from src.input.ButtonMouseHandler import ButtonMouseHandler
 
@@ -115,7 +107,7 @@ class Game(Process):
             if self.__checkCollidedObjects(objectsCollided) and not self.__ignoreY:
                 self.__world.moveDynamicObject("Player", 0, 0, -dZ)
 
-    def __checkCollidedObjects(self, objects):
+    def __checkCollidedObjects(self, objects) -> bool:
         cantMove = False
         for i in objects:
             if type(i) == StaticPyramid:
@@ -123,7 +115,7 @@ class Game(Process):
             elif type(i) == StaticCube:
                 cantMove = True
             elif type(i) == DynamicCube:
-                cantMove = True  # FIXME: Works wrong.
+                cantMove = True
             elif type(i) == Powerup:
                 i.onImpact(self)
             elif type(i) == FinishCube:
@@ -191,5 +183,5 @@ class Game(Process):
     def quit(self):
         raise ProcessChangedException(self.__menu)
     
-    def getEventHandler(self):
+    def getEventHandler(self) -> EventHandler:
         return self.__eventHandler

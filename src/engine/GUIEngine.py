@@ -24,7 +24,7 @@ class GUIEngine:
 
         self.__baseSurface = pg.surface.Surface((width, height), pg.SRCALPHA)
     
-    def __createPauseButton(self):
+    def __createPauseButton(self) -> ButtonRenderer:
         button = self.__createButton(self.__width - 80, 10, "||", self.__pauseGame)
         self.__buttons.add(button)
         return button
@@ -55,7 +55,7 @@ class GUIEngine:
         pg.draw.polygon(surface, (255, 0, 0), [(x - 20, y), (x, y - 20), (x + 20, y), (x, y + 20)])
         pg.draw.polygon(surface, (0, 0, 0), [(x - 20, y), (x, y - 20), (x + 20, y), (x, y + 20)], 1)
     
-    def __createButton(self, x: int, y: int, text: str, action):
+    def __createButton(self, x: int, y: int, text: str, action) -> ButtonRenderer:
         eventHandler = self.__game.getEventHandler()
 
         button = ButtonFactory.createButton(text, (x, y))

@@ -1,6 +1,6 @@
 class IMouseHandler:
 
-    def addButton(self, x1, y1, x2, y2, clickAction, hoveringAction):
+    def addButton(self, x1, y1, x2, y2, idleAction, clickAction, hoveringAction):
         raise NotImplementedError("Override.")
 
     def handleClick(self, pos):

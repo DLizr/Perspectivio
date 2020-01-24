@@ -9,7 +9,7 @@ from src.animation.Hovering import Hovering
 
 class Powerup(DynamicSceneObject):
 
-    def __init__(self, centerPosition: list, width, colors: list=None):
+    def __init__(self, centerPosition: list, width: int, colors: list=None):
         self.__width = width
         self.__action = None
         vertices = self.__genVertices(centerPosition)
@@ -87,17 +87,18 @@ class Powerup(DynamicSceneObject):
             self.__action.onImpact(game)
     
     # Override
-    def getPosition(self):
+    def getPosition(self) -> list:
         return self._centerPosition.copy()
 
-    def getWidth(self):
+    def getWidth(self) -> float:
         return self.__width / 2
     
-    def getHeight(self):
+    def getHeight(self) -> int:
         return self.__width
 
     # Override
-    def render(self):
+    @staticmethod
+    def render():
         super().render(GL_TRIANGLES)
 
     def update(self, world):
@@ -106,5 +107,5 @@ class Powerup(DynamicSceneObject):
         self._updateVertices()
     
     @staticmethod
-    def getShape():
+    def getShape() -> str:
         return "Rectangle"

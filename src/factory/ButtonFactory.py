@@ -6,7 +6,7 @@ from src.rendering.object.ButtonRenderer import ButtonRenderer
 class ButtonFactory:
 
     @staticmethod
-    def createButton(text: str, pos):
+    def createButton(text: str, pos) -> ButtonRenderer:
         font = pg.font.Font("src/assets/ButtonFont.otf", 70)
         textSurface = font.render(text, 1, (255, 255, 255))
 

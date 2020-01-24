@@ -1,25 +1,19 @@
-from src.rendering.object.StaticCube import StaticCube
-from src.rendering.object.DynamicCube import DynamicCube
-from src.rendering.object.StaticPyramid import StaticPyramid
-from src.rendering.object.Powerup import Powerup
-
-
 class CollisionChecker:
 
     @staticmethod
-    def checkCollision(obj1, obj2, ignoreX, ignoreY, ignoreZ):
+    def checkCollision(obj1, obj2, ignoreX, ignoreY, ignoreZ) -> bool:
         if obj1.getShape() == "Cube" and obj2.getShape() == "Cube":
             return CollisionChecker.checkCollisionOfTwoCubes(obj1, obj2, ignoreX, ignoreY, ignoreZ)
         elif obj1.getShape() == "Cube" and obj2.getShape() == "Rectangle":
             return CollisionChecker.checkCollisionOfCubeAndRectangle(obj1, obj2, ignoreX, ignoreY, ignoreZ)
     
     @staticmethod
-    def checkTouch(obj1, obj2, ignoreX, ignoreY, ignoreZ):
+    def checkTouch(obj1, obj2, ignoreX, ignoreY, ignoreZ) -> bool:
         if obj1.getShape() == "Cube" and obj2.getShape() == "Cube":
             return CollisionChecker.checkTouchOfTwoCubes(obj1, obj2, ignoreX, ignoreY, ignoreZ)
 
     @staticmethod
-    def checkCollisionOfTwoCubes(cube1, cube2, ignoreX, ignoreY, ignoreZ):
+    def checkCollisionOfTwoCubes(cube1, cube2, ignoreX, ignoreY, ignoreZ) -> bool:
         pos1 = cube1.getPosition()
         pos2 = cube2.getPosition()
         width1 = cube1.getWidth()
@@ -33,7 +27,7 @@ class CollisionChecker:
         return False
     
     @staticmethod
-    def checkCollisionOfCubeAndRectangle(cube, rect, ignoreX, ignoreY, ignoreZ):
+    def checkCollisionOfCubeAndRectangle(cube, rect, ignoreX, ignoreY, ignoreZ) -> bool:
         pos1 = cube.getPosition()
         pos2 = rect.getPosition()
         width1 = cube.getWidth()
@@ -49,7 +43,7 @@ class CollisionChecker:
         return False
     
     @staticmethod
-    def checkTouchOfTwoCubes(cube1, cube2, ignoreX, ignoreY, ignoreZ):
+    def checkTouchOfTwoCubes(cube1, cube2, ignoreX, ignoreY, ignoreZ) -> bool:
         pos1 = cube1.getPosition()
         pos2 = cube2.getPosition()
         width1 = cube1.getWidth()

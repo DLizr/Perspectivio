@@ -33,7 +33,7 @@ class Field:
                 0 <= y < self.__height and 
                 0 <= z < self.__depth)
     
-    def getTilesNearby(self, x: int, y: int, z: int, ignoreX=False, ignoreY=False, ignoreZ=False):
+    def getTilesNearby(self, x: int, y: int, z: int, ignoreX=False, ignoreY=False, ignoreZ=False) -> np.ndarray:
         dynamicObjects = list()
         
         x1 = max(0, x-1) if not ignoreX else 0
@@ -49,7 +49,7 @@ class Field:
 
         return np.concatenate((self.__field[x1:x2, y1:y2, z1:z2].flatten(), np.array(dynamicObjects)))
     
-    def getTilesUnder(self, x: int, y: int, z: int, ignoreX=False, ignoreY=False, ignoreZ=False):
+    def getTilesUnder(self, x: int, y: int, z: int, ignoreX=False, ignoreY=False, ignoreZ=False) -> np.ndarray:
         dynamicObjects = list()
 
         x1 = max(0, x-1) if not ignoreX else 0

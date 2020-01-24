@@ -43,5 +43,5 @@ class EventHandler:
         if self.__keyboardHandler:
             self.__keyboardHandler.handleKeys(self.__keysPressed)
     
-    def getMouseHandler(self):
+    def getMouseHandler(self) -> IMouseHandler:
         return self.__mouseHandler

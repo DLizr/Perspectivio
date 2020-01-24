@@ -16,7 +16,7 @@ class ButtonRenderer:
     def idle(self):
         self.__currentImage = self.__imageIdle
     
-    def getSize(self):
+    def getSize(self) -> tuple:
         return self.__currentImage.get_size()
     
     def render(self, surface):

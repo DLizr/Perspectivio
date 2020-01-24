@@ -12,8 +12,6 @@ from src.engine.SurfaceBlitter import SurfaceBlitter
 from src.factory.GameFactory import GameFactory
 from src.factory.ButtonFactory import ButtonFactory
 
-from src.rendering.object.ButtonRenderer import ButtonRenderer
-
 
 class MainMenu(Process):
 
@@ -27,7 +25,7 @@ class MainMenu(Process):
 
         self.__openMainScreen()
     
-    def __createBackgroundSurface(self):
+    def __createBackgroundSurface(self) -> pg.Surface:
         surface = pg.surface.Surface(self.__size)
         img = pg.image.load("src/assets/Background.png").convert()
 

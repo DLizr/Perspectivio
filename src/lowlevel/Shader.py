@@ -50,6 +50,6 @@ class Shader:
         glUseProgram(0)
     
     @staticmethod
-    def getFileContent(filename: str):
+    def getFileContent(filename: str) -> str:
         with open(filename, encoding="utf-8") as file:
             return file.read()

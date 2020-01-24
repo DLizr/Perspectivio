@@ -40,12 +40,12 @@ class StaticCube(StaticSceneObject):
         color = [0, 0, 0]
         self.addChildObject(Wireframe(vertices, indices, color))
     
-    def getPosition(self) -> np.ndarray:
+    def getPosition(self) -> list:
         return self._centerPosition.copy()
     
     def getWidth(self) -> int:
         return self.__width
     
     @staticmethod
-    def getShape():
+    def getShape() -> str:
         return "Cube"

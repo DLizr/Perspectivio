@@ -18,6 +18,6 @@ class Button:
     def onHover(self):
         raise NotImplementedError
     
-    def collidesPoint(self, x, y):
+    def collidesPoint(self, x, y) -> bool:
         return ((self.__x1 < x < self.__x2 or self.__x2 < x < self.__x1) and
                 (self.__y1 < y < self.__y2 or self.__y2 < y < self.__y1))

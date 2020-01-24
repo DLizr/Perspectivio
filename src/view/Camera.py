@@ -34,7 +34,7 @@ class Camera:
     def getOrthogonalMatrix(self) -> np.ndarray:
         return self.__orthogonalMatrix
     
-    def getModelMatrix(self):
+    def getModelMatrix(self) -> np.ndarray:
         translation= np.transpose(pyrr.matrix44.create_from_translation(pyrr.Vector3([3, 1, 0])))
         scale= pyrr.matrix44.create_from_scale(pyrr.Vector3([50, 50, 50]))
         return np.matmul(scale, translation)

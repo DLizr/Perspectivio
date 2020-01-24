@@ -44,7 +44,7 @@ class VBO:
     def disable(self):
         glDisableVertexAttribArray(self.__slot)
     
-    def getId(self):
+    def getId(self) -> int:
         return self.__id
     
     def render(self):
