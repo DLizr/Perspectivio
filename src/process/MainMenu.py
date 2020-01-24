@@ -22,17 +22,16 @@ class MainMenu(Process):
         self.__size = (width, height)
         self.__eventHandler = EventHandler()
         self.__eventHandler.setMouseHandler(ButtonMouseHandler(self))
-        self.__background = self.__createBackgoundSurface()
+        self.__title = pg.image.load("src/assets/Title.png").convert_alpha()
+        self.__background = self.__createBackgroundSurface()
 
         self.__openMainScreen()
     
-    def __createBackgoundSurface(self):
+    def __createBackgroundSurface(self):
         surface = pg.surface.Surface(self.__size)
         img = pg.image.load("src/assets/Background.png").convert()
-        title = pg.image.load("src/assets/Title.png").convert_alpha()
 
         surface.blit(img, (0, 0))
-        surface.blit(title, (100, 50))
         
         return surface
 
@@ -62,10 +61,12 @@ class MainMenu(Process):
         self.addButton(650, 50, "5", lambda: self.__startLevel("5"))
 
         self.addButton(289, 420, "Назад", self.__openMainScreen)
+        self.__background = self.__createBackgroundSurface()
     
     def __openMainScreen(self):
         self.__buttons.clear()
         self.__eventHandler.getMouseHandler().clearButtons()
+        self.__background.blit(self.__title, (100, 50))
 
         self.addButton(280, 250, "Играть", self.__openLevelSelectionScreen)
         self.addButton(289, 380, "Выйти", self.exit)
