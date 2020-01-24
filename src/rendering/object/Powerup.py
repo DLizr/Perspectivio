@@ -97,8 +97,7 @@ class Powerup(DynamicSceneObject):
         return self.__width
 
     # Override
-    @staticmethod
-    def render():
+    def render(self):
         super().render(GL_TRIANGLES)
 
     def update(self, world):
